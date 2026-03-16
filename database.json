@@ -1,0 +1,301 @@
+{
+  "restaurants": [
+    {
+      "id": "1",
+      "name": "Dookki Hanoi",
+      "address": "Vincom Phạm Ngọc Thạch, Hà Nội",
+      "phone": "0988888888"
+    }
+  ],
+  "tables": [
+    {
+      "id": "1",
+      "restaurantId": 1,
+      "tableNumber": 1,
+      "qrCode": "R1_T1",
+      "capacity": 4,
+      "status": "available"
+    },
+    {
+      "id": "2",
+      "restaurantId": 1,
+      "tableNumber": 2,
+      "qrCode": "R1_T2",
+      "capacity": 4,
+      "status": "available"
+    },
+    {
+      "id": "3",
+      "restaurantId": 1,
+      "tableNumber": 3,
+      "qrCode": "R1_T3",
+      "capacity": 6,
+      "status": "available"
+    }
+  ],
+  "buffets": [
+    {
+      "id": "1",
+      "restaurantId": 1,
+      "name": "Buffet Tokbokki Standard",
+      "price": 139000,
+      "duration": 90
+    },
+    {
+      "id": "2",
+      "restaurantId": 1,
+      "name": "Buffet Tokbokki Premium",
+      "price": 179000,
+      "duration": 120
+    }
+  ],
+  "buffetAddons": [
+    {
+      "id": "1",
+      "restaurantId": 1,
+      "name": "Phô mai kéo sợi",
+      "price": 20000
+    },
+    {
+      "id": "2",
+      "restaurantId": 1,
+      "name": "Lẩu cay extra",
+      "price": 15000
+    }
+  ],
+  "menuCategories": [
+    {
+      "id": "1",
+      "name": "Tokbokki"
+    },
+    {
+      "id": "2",
+      "name": "Thịt"
+    },
+    {
+      "id": "3",
+      "name": "Hải sản"
+    },
+    {
+      "id": "4",
+      "name": "Đồ uống"
+    },
+    {
+      "id": "5",
+      "name": "Tráng miệng"
+    }
+  ],
+  "menuItems": [
+    {
+      "id": "1",
+      "restaurantId": 1,
+      "categoryId": 1,
+      "name": "Tokbokki truyền thống",
+      "price": 0,
+      "image": "/menu/tokbokki.jpg"
+    },
+    {
+      "id": "2",
+      "restaurantId": 1,
+      "categoryId": 1,
+      "name": "Chả cá Hàn Quốc",
+      "price": 0,
+      "image": "/menu/fishcake.jpg"
+    },
+    {
+      "id": "3",
+      "restaurantId": 1,
+      "categoryId": 2,
+      "name": "Ba chỉ bò Mỹ",
+      "price": 89000,
+      "image": "/menu/beef.jpg"
+    },
+    {
+      "id": "4",
+      "restaurantId": 1,
+      "categoryId": 2,
+      "name": "Ba chỉ heo",
+      "price": 79000,
+      "image": "/menu/pork.jpg"
+    },
+    {
+      "id": "5",
+      "restaurantId": 1,
+      "categoryId": 3,
+      "name": "Tôm sú",
+      "price": 99000,
+      "image": "/menu/shrimp.jpg"
+    },
+    {
+      "id": "6",
+      "restaurantId": 1,
+      "categoryId": 4,
+      "name": "Coca Cola",
+      "price": 20000,
+      "image": "/menu/coca.jpg"
+    },
+    {
+      "id": "7",
+      "restaurantId": 1,
+      "categoryId": 4,
+      "name": "Trà đào",
+      "price": 25000,
+      "image": "/menu/peachtea.jpg"
+    },
+    {
+      "id": "8",
+      "restaurantId": 1,
+      "categoryId": 5,
+      "name": "Kem vani",
+      "price": 30000,
+      "image": "/menu/icecream.jpg"
+    }
+  ],
+  "orders": [
+    {
+      "id": "1",
+      "restaurantId": 1,
+      "tableId": "1",
+      "orderType": "buffet",
+      "buffetId": 1,
+      "guestCount": 3,
+      "addonIds": [
+        1
+      ],
+      "status": "ordering",
+      "subTotal": 0,
+      "buffetTotal": 417000,
+      "addonTotal": 20000,
+      "grandTotal": 437000,
+      "createdAt": "2026-03-05T12:00:00",
+      "updatedAt": "2026-03-05T13:28:27.710Z"
+    },
+    {
+      "id": "7717",
+      "restaurantId": 1,
+      "tableId": "1",
+      "orderType": "buffet",
+      "buffetId": 1,
+      "guestCount": 2,
+      "addonIds": [],
+      "status": "ordering",
+      "updatedAt": "2026-03-05T13:36:25.731Z",
+      "note": "",
+      "subTotal": 0,
+      "buffetTotal": 0,
+      "addonTotal": 0,
+      "grandTotal": 0,
+      "createdAt": "2026-03-05T13:36:25.731Z"
+    },
+    {
+      "id": "c1a2",
+      "restaurantId": 1,
+      "tableId": "1",
+      "orderType": "buffet",
+      "buffetId": 1,
+      "guestCount": 5,
+      "addonIds": [],
+      "status": "ordering",
+      "updatedAt": "2026-03-05T13:47:06.856Z",
+      "note": "",
+      "subTotal": 0,
+      "buffetTotal": 0,
+      "addonTotal": 0,
+      "grandTotal": 0,
+      "createdAt": "2026-03-05T13:47:06.856Z"
+    },
+    {
+      "id": "c84c",
+      "restaurantId": 1,
+      "tableId": "1",
+      "orderType": "buffet",
+      "buffetId": 2,
+      "guestCount": 2,
+      "addonIds": [],
+      "status": "ordering",
+      "updatedAt": "2026-03-05T13:49:07.430Z",
+      "note": "",
+      "subTotal": 0,
+      "buffetTotal": 0,
+      "addonTotal": 0,
+      "grandTotal": 0,
+      "createdAt": "2026-03-05T13:49:07.430Z"
+    }
+  ],
+  "orderItems": [
+    {
+      "id": "1",
+      "orderId": 1,
+      "menuItemId": 1,
+      "name": "Tokbokki truyền thống",
+      "quantity": 2,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending"
+    },
+    {
+      "id": "2",
+      "orderId": 1,
+      "menuItemId": 3,
+      "name": "Ba chỉ bò Mỹ",
+      "quantity": 1,
+      "unitPrice": 89000,
+      "lineTotal": 89000,
+      "itemType": "alacarte",
+      "status": "pending"
+    },
+    {
+      "id": "09c0",
+      "orderId": "c84c",
+      "menuItemId": "1",
+      "name": "Tokbokki truyền thống",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-05T13:49:10.033Z"
+    },
+    {
+      "id": "add4",
+      "orderId": "c84c",
+      "menuItemId": "2",
+      "name": "Chả cá Hàn Quốc",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-05T13:49:12.288Z"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "1",
+      "restaurantId": 1,
+      "customerName": "Nguyễn Văn A",
+      "phone": "0912345678",
+      "guestCount": 4,
+      "bookingTime": "2026-03-10T18:00:00",
+      "status": "pending"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "123456",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "username": "staff",
+      "password": "123456",
+      "role": "restaurant"
+    }
+  ]
+
+}
