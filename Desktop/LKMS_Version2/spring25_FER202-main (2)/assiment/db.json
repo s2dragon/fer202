@@ -467,13 +467,22 @@
       "id": "1",
       "username": "admin",
       "password": "123456",
-      "role": "admin"
+      "role": "admin",
+      "status": "active"
     },
     {
       "id": "2",
       "username": "staff",
       "password": "123456",
-      "role": "restaurant"
+      "role": "user",
+      "status": "banned"
+    },
+    {
+      "id": "8492",
+      "username": "son",
+      "password": "nam",
+      "role": "staff",
+      "status": "active"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
