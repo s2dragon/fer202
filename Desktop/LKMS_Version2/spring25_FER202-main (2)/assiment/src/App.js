@@ -1,7 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import ScanQr from "./components/ScanQr";
 import BuffetSetup from "./components/BuffetSetup";
 import MenuPage from "./components/MenuPage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import AdminDashboard from "./pages/AdminDashboard";
+import StaffDashboard from "./pages/StaffDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   getTableByQr,
@@ -19,7 +28,9 @@ import {
   calcTotals,
 } from "./api/qrOrderApi";
 
-export default function App() {
+// Component con xử lý luồng đặt món cũ
+function OrderFlow() {
+  const navigate = useNavigate();
   const [step, setStep] = useState("scan"); // scan | buffet | menu
   const [qrCode, setQrCode] = useState("R1_T1");
 
@@ -150,7 +161,6 @@ export default function App() {
     }
   };
 
-  // Add to cart with animation handled in MenuCard; here only data logic
   const onAddMenuItem = async (mi) => {
     if (!order) return alert("Chưa có order, hãy chọn buffet trước!");
 
@@ -166,7 +176,6 @@ export default function App() {
         return;
       }
 
-      // type for UI label
       const itemType = mi.price === 0 ? "buffet" : (mi.categoryId === 4 ? "drink" : "alacarte");
 
       const created = await addOrderItem({
@@ -238,11 +247,30 @@ export default function App() {
             {table ? `Bàn ${table.tableNumber} • ${table.qrCode}` : "Quét QR để bắt đầu"}
           </div>
         </div>
-        {step !== "scan" && (
-          <button style={btnGhost} onClick={() => setStep("scan")}>
-            Đổi bàn
+        <div style={{display: "flex", gap: "10px"}}>
+          {step !== "scan" && (
+            <button style={btnGhost} onClick={() => setStep("scan")}>
+              Đổi bàn
+            </button>
+          )}
+          <button
+            style={{
+              padding: '8px 16px',
+              borderRadius: 10,
+              border: 'none',
+              background: 'linear-gradient(135deg, #667eea, #764ba2)',
+              color: 'white',
+              cursor: 'pointer',
+              fontWeight: 600,
+              fontSize: 13,
+              transition: 'all 0.3s',
+              boxShadow: '0 3px 10px rgba(102,126,234,0.3)',
+            }}
+            onClick={() => navigate('/login')}
+          >
+            🔑 Đăng nhập
           </button>
-        )}
+        </div>
       </div>
 
       {step === "scan" && <ScanQr qrCode={qrCode} setQrCode={setQrCode} onScan={() => onScan()} />}
@@ -281,6 +309,39 @@ export default function App() {
         />
       )}
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <ToastContainer position="top-right" autoClose={3000} />
+        <Routes>
+          <Route path="/" element={<OrderFlow />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/staff"
+            element={
+              <ProtectedRoute allowedRoles={["staff", "admin"]}>
+                <StaffDashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
