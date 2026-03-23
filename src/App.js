@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import ScanQr from "./features/scan/ScanQr";
 import BuffetSetup from "./features/buffet/BuffetSetup";
 import MenuPage from "./features/menu/MenuPage";
+import KitchenDashboard from "./features/kitchen/KitchenDashboard";
 
 import {
   getTableByQr,
@@ -35,6 +36,7 @@ export default function App() {
   const [selectedBuffetId, setSelectedBuffetId] = useState("");
   const [guestCount, setGuestCount] = useState(2);
   const [selectedAddonIds, setSelectedAddonIds] = useState([]);
+  const [orderNote, setOrderNote] = useState("");
 
   const apiCacheRef = useRef({
     buffets: {},
@@ -124,6 +126,7 @@ export default function App() {
         setSelectedBuffetId(existing.buffetId ? String(existing.buffetId) : "");
         setGuestCount(existing.guestCount || 2);
         setSelectedAddonIds(existing.addonIds || []);
+        setOrderNote(existing.note || "");
         setOrderItems(await getOrderItems(existing.id));
       } else {
         setOrder(null);
@@ -131,6 +134,7 @@ export default function App() {
         setSelectedBuffetId("");
         setGuestCount(2);
         setSelectedAddonIds([]);
+        setOrderNote("");
       }
 
       setStep("buffet");
@@ -153,6 +157,7 @@ export default function App() {
       guestCount: Number(guestCount),
       addonIds: selectedAddonIds,
       status: "ordering",
+      note: orderNote,
       updatedAt: now,
     };
 
@@ -161,7 +166,7 @@ export default function App() {
       if (!od) {
         od = await createOrder({
           ...payload,
-          note: "",
+          note: orderNote,
           subTotal: 0,
           buffetTotal: 0,
           addonTotal: 0,
@@ -249,6 +254,7 @@ export default function App() {
         subTotal: totals.subTotal,
         grandTotal: totals.grandTotal,
         status: "pending",
+        note: orderNote,
         updatedAt: now,
       });
       setOrder(updated);
@@ -267,14 +273,28 @@ export default function App() {
             {table ? `Bàn ${table.tableNumber} • ${table.qrCode}` : "Quét QR để bắt đầu"}
           </div>
         </div>
-        {step !== "scan" && (
-          <button style={btnGhost} onClick={() => setStep("scan")}>
-            Đổi bàn
-          </button>
-        )}
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          {step !== "kitchen" ? (
+            <button style={btnGhost} onClick={() => setStep("kitchen")}>
+              Bếp
+            </button>
+          ) : (
+            <button style={btnGhost} onClick={() => setStep("scan")}>
+              Khách
+            </button>
+          )}
+
+          {step !== "scan" && step !== "kitchen" && (
+            <button style={btnGhost} onClick={() => setStep("scan")}>
+              Đổi bàn
+            </button>
+          )}
+        </div>
       </div>
 
       {step === "scan" && <ScanQr qrCode={qrCode} setQrCode={setQrCode} onScan={() => onScan()} />}
+
+      {step === "kitchen" && <KitchenDashboard onBack={() => setStep("scan")} />}
 
       {step === "buffet" && table && (
         <BuffetSetup
@@ -307,6 +327,8 @@ export default function App() {
           onQty={onQty}
           onSubmit={onSubmitToKitchen}
           onChangeBuffet={() => setStep("buffet")}
+          orderNote={orderNote}
+          setOrderNote={setOrderNote}
         />
       )}
     </div>
