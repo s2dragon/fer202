@@ -19,6 +19,8 @@ export default function MenuPage({
   onQty,
   onSubmit,
   onChangeBuffet,
+  orderNote,
+  setOrderNote,
 }) {
   const [activeCategoryId, setActiveCategoryId] = useState(null);
   const [search, setSearch] = useState("");
@@ -94,6 +96,8 @@ export default function MenuPage({
           onChangeBuffet();
         }}
         orderStatus={order?.status}
+        orderNote={orderNote}
+        setOrderNote={setOrderNote}
       />
     </div>
   );
