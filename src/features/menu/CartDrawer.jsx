@@ -13,6 +13,8 @@ export default function CartDrawer({
   onSubmit,
   onChangeBuffet,
   orderStatus,
+  orderNote,
+  setOrderNote,
 }) {
   if (!open) return null;
 
@@ -66,6 +68,17 @@ export default function CartDrawer({
 
         <Totals totals={totals} />
 
+        <div style={{ marginTop: 12 }}>
+          <label style={{ fontWeight: 900, fontSize: 14 }}>Ghi chú cho bếp:</label>
+          <textarea
+            style={noteInput}
+            value={orderNote}
+            onChange={(e) => setOrderNote(e.target.value)}
+            placeholder="Ví dụ: Không hành, ít cay..."
+            rows={3}
+          />
+        </div>
+
         <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
           <button style={ghost} onClick={onChangeBuffet}>Đổi buffet</button>
           <button style={primary} onClick={onSubmit}>Gửi bếp</button>
@@ -78,6 +91,16 @@ export default function CartDrawer({
     </div>
   );
 }
+
+const noteInput = {
+  width: "100%",
+  marginTop: 6,
+  padding: "8px 10px",
+  borderRadius: 8,
+  border: "1px solid #ddd",
+  fontSize: 14,
+  resize: "vertical",
+};
 
 const overlay = {
   position: "fixed",
