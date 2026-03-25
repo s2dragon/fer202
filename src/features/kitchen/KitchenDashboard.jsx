@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Container, Button, Form, Row, Col, Card, Badge, Accordion, Table } from "react-bootstrap";
+import { Container, Button, Form, Badge, Accordion, Table } from "react-bootstrap";
 import {
   getAllTables,
   getOrders,
@@ -44,6 +44,7 @@ export default function KitchenDashboard({ onBack }) {
     loadData();
     const timer = setInterval(loadData, 3000);
     return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const tableById = useMemo(() => {
