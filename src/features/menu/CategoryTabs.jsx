@@ -1,47 +1,29 @@
 import React from "react";
+import { Button } from "react-bootstrap";
 
 export default function CategoryTabs({ categories, activeId, onChange }) {
   return (
-    <div style={tabs}>
-      <button
+    <div className="d-flex gap-2 overflow-auto pb-2" style={{ scrollbarWidth: "none" }}>
+      <Button
         key="all"
-        style={activeId === null ? { ...tab, ...active } : tab}
+        variant={activeId === null ? "dark" : "outline-secondary"}
+        className="rounded-pill px-4"
+        style={{ whiteSpace: "nowrap" }}
         onClick={() => onChange(null)}
       >
         Tất cả
-      </button>
+      </Button>
       {categories.map((cat) => (
-        <button
+        <Button
           key={cat.id}
-          style={activeId === Number(cat.id) ? { ...tab, ...active } : tab}
+          variant={activeId === Number(cat.id) ? "dark" : "outline-secondary"}
+          className="rounded-pill px-4"
+          style={{ whiteSpace: "nowrap" }}
           onClick={() => onChange(cat.id)}
         >
           {cat.name}
-        </button>
+        </Button>
       ))}
     </div>
   );
 }
-
-const tabs = {
-  display: "flex",
-  gap: 8,
-  overflowX: "auto",
-  paddingBottom: 8,
-};
-
-const tab = {
-  padding: "8px 16px",
-  border: "1px solid #ddd",
-  borderRadius: 20,
-  background: "#fff",
-  fontSize: 14,
-  whiteSpace: "nowrap",
-  cursor: "pointer",
-};
-
-const active = {
-  background: "#007bff",
-  color: "#fff",
-  borderColor: "#007bff",
-};

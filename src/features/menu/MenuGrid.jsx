@@ -1,18 +1,15 @@
 import React from "react";
+import { Row, Col } from "react-bootstrap";
 import MenuCard from "./MenuCard";
 
 export default function MenuGrid({ items, onAdd }) {
   return (
-    <div style={grid}>
+    <Row className="g-3">
       {items.map((it) => (
-        <MenuCard key={it.id} item={it} onAdd={onAdd} />
+        <Col xs={6} md={4} lg={3} key={it.id}>
+          <MenuCard item={it} onAdd={onAdd} />
+        </Col>
       ))}
-    </div>
+    </Row>
   );
 }
-
-const grid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
-  gap: 12,
-};

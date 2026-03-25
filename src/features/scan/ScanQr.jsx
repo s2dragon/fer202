@@ -1,27 +1,26 @@
 import React from "react";
+import { Card, Form, Button, InputGroup } from "react-bootstrap";
 
 export default function ScanQr({ qrCode, setQrCode, onScan }) {
   return (
-    <div style={card}>
-      <h3 style={{ marginTop: 0 }}>Quét QR / nhập mã bàn</h3>
-      <div style={{ display: "flex", gap: 8 }}>
-        <input
-          value={qrCode}
-          onChange={(e) => setQrCode(e.target.value)}
-          placeholder="vd: R1_T1"
-          style={input}
-        />
-        <button onClick={onScan} style={primary}>
-          Vào menu
-        </button>
-      </div>
-      <div style={{ marginTop: 10, fontSize: 12, color: "#666" }}>
-        Tip: QR thật sẽ mở link dạng <b>?qr=R1_T1</b> tự vào menu.
-      </div>
-    </div>
+    <Card className="shadow-sm border-0 mb-4 rounded-4">
+      <Card.Body className="p-4">
+        <h4 className="fw-bold mb-3">Quét QR / nhập mã bàn</h4>
+        <InputGroup className="mb-3">
+          <Form.Control
+            value={qrCode}
+            onChange={(e) => setQrCode(e.target.value)}
+            placeholder="vd: R1_T1"
+            className="rounded-start-3 py-2"
+          />
+          <Button variant="dark" onClick={onScan} className="fw-bold px-4 rounded-end-3">
+            Vào menu
+          </Button>
+        </InputGroup>
+        <div className="text-muted small">
+          Tip: QR thật sẽ mở link dạng <b>?qr=R1_T1</b> tự vào menu.
+        </div>
+      </Card.Body>
+    </Card>
   );
 }
-
-const card = { border: "1px solid #eee", borderRadius: 16, padding: 14, background: "#fff" };
-const input = { width: "100%", padding: "10px 12px", borderRadius: 12, border: "1px solid #ddd" };
-const primary = { padding: "10px 12px", borderRadius: 12, border: "1px solid #111", background: "#111", color: "#fff", cursor: "pointer", fontWeight: 900 };

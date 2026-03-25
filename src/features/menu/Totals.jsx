@@ -2,20 +2,23 @@ import React from "react";
 
 export default function Totals({ totals }) {
   return (
-    <div style={{ borderTop: "1px solid #eee", marginTop: 12, paddingTop: 12 }}>
-      <Row label="Buffet" value={`${totals.buffetTotal.toLocaleString()}đ`} />
-      <Row label="Add-on" value={`${totals.addonTotal.toLocaleString()}đ`} />
-      <Row label="Gọi thêm" value={`${totals.subTotal.toLocaleString()}đ`} />
-      <Row label="Tạm tính" value={`${totals.grandTotal.toLocaleString()}đ`} strong />
+    <div className="border-top mt-3 pt-3">
+      <TotalRow label="Buffet" value={`${totals.buffetTotal.toLocaleString()}đ`} />
+      <TotalRow label="Add-on" value={`${totals.addonTotal.toLocaleString()}đ`} />
+      <TotalRow label="Gọi thêm" value={`${totals.subTotal.toLocaleString()}đ`} />
+      <div className="d-flex justify-content-between mt-2 pt-2 border-top">
+        <div className="text-secondary fw-bold">Tạm tính</div>
+        <div className="fw-bold fs-5 text-danger">{totals.grandTotal.toLocaleString()}đ</div>
+      </div>
     </div>
   );
 }
 
-function Row({ label, value, strong }) {
+function TotalRow({ label, value }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
-      <div style={{ color: "#666" }}>{label}</div>
-      <div style={{ fontWeight: strong ? 900 : 800 }}>{value}</div>
+    <div className="d-flex justify-content-between mt-2">
+      <div className="text-secondary fw-semibold small">{label}</div>
+      <div className="fw-bold small">{value}</div>
     </div>
   );
 }

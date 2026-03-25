@@ -1,8 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import ScanQr from "./features/scan/ScanQr";
 import BuffetSetup from "./features/buffet/BuffetSetup";
 import MenuPage from "./features/menu/MenuPage";
 import KitchenDashboard from "./features/kitchen/KitchenDashboard";
+import BookingUser from "./features/booking/BookingUser";
+import BookingStaff from "./features/booking/BookingStaff";
+import Login from "./features/auth/Login";
+import CashierDashboard from "./features/cashier/CashierDashboard";
+import AdminIndex from "./features/admin/index";
 
 import {
   getTableByQr,
@@ -21,7 +27,8 @@ import {
 } from "./api/qrOrderApi";
 
 export default function App() {
-  const [step, setStep] = useState("scan"); // scan | buffet | menu
+  const [user, setUser] = useState(null);
+  const [step, setStep] = useState("scan"); // scan | buffet | menu | login ...
   const [qrCode, setQrCode] = useState("R1_T1");
 
   const [table, setTable] = useState(null);
@@ -46,7 +53,7 @@ export default function App() {
   });
 
   const selectedBuffet = useMemo(
-    () => buffets.find((b) => b.id === Number(selectedBuffetId)) || null,
+    () => buffets.find((b) => String(b.id) === String(selectedBuffetId)) || null,
     [buffets, selectedBuffetId]
   );
 
@@ -265,36 +272,75 @@ export default function App() {
   };
 
   return (
-    <div style={page}>
-      <div style={topBar}>
-        <div>
-          <div style={{ fontWeight: 800, fontSize: 18 }}>QR Ordering</div>
-          <div style={{ color: "#666", fontSize: 12 }}>
-            {table ? `Bàn ${table.tableNumber} • ${table.qrCode}` : "Quét QR để bắt đầu"}
-          </div>
-        </div>
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          {step !== "kitchen" ? (
-            <button style={btnGhost} onClick={() => setStep("kitchen")}>
-              Bếp
-            </button>
-          ) : (
-            <button style={btnGhost} onClick={() => setStep("scan")}>
-              Khách
-            </button>
-          )}
+    <div style={{ fontFamily: "system-ui", background: "#f8f9fa", minHeight: "100vh" }}>
+      <Navbar bg="white" expand="lg" className="shadow-sm mb-4 sticky-top">
+        <Container>
+          <Navbar.Brand>
+            <div style={{ fontWeight: 800, fontSize: 18 }}>QR Ordering</div>
+            <div style={{ color: "#666", fontSize: 12 }}>
+              {table ? `Bàn ${table.tableNumber} • ${table.qrCode}` : "Quét QR để bắt đầu"}
+            </div>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ms-auto align-items-center" style={{ gap: "8px" }}>
+              {user ? (
+                <span style={{ fontSize: 14, marginRight: "10px" }}>
+                  Chào, <b className="text-danger">{user.username}</b> ({user.role}) |{" "}
+                  <span style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }} onClick={() => setUser(null)}>Thoát</span>
+                </span>
+              ) : (
+                <Button variant="outline-primary" size="sm" onClick={() => setStep("login")}>Đăng nhập</Button>
+              )}
 
-          {step !== "scan" && step !== "kitchen" && (
-            <button style={btnGhost} onClick={() => setStep("scan")}>
-              Đổi bàn
-            </button>
-          )}
-        </div>
-      </div>
+              <Button variant="outline-dark" size="sm" onClick={() => setStep("booking-user")}>
+                Đặt bàn
+              </Button>
+
+              {user && (user.role === "admin" || user.role === "restaurant") && (
+                <>
+                  <Button variant="outline-dark" size="sm" onClick={() => setStep("booking-staff")}>
+                    QL Đặt bàn
+                  </Button>
+                  <Button variant="outline-dark" size="sm" onClick={() => setStep("kitchen")}>
+                    Bếp
+                  </Button>
+                  <Button variant="outline-dark" size="sm" onClick={() => setStep("cashier")}>
+                    Thu ngân
+                  </Button>
+                  {user.role === "admin" && (
+                    <Button variant="outline-danger" size="sm" onClick={() => setStep("admin")}>
+                      Quản trị (Admin)
+                    </Button>
+                  )}
+                </>
+              )}
+
+              {step !== "scan" && step !== "kitchen" && !step.startsWith("booking") && step !== "login" && (
+                <Button variant="dark" size="sm" onClick={() => setStep("scan")}>
+                  Đổi bàn
+                </Button>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+      <Container>
+
+      {step === "login" && <Login onLoginSuccess={(u) => { setUser(u); setStep("scan"); }} onBack={() => setStep("scan")} />}
 
       {step === "scan" && <ScanQr qrCode={qrCode} setQrCode={setQrCode} onScan={() => onScan()} />}
 
-      {step === "kitchen" && <KitchenDashboard onBack={() => setStep("scan")} />}
+      {step === "kitchen" && user && (user.role === "admin" || user.role === "restaurant") && <KitchenDashboard onBack={() => setStep("scan")} />}
+
+      {step === "cashier" && user && (user.role === "admin" || user.role === "restaurant") && <CashierDashboard onBack={() => setStep("scan")} />}
+
+      {step === "admin" && user && user.role === "admin" && <AdminIndex onBack={() => setStep("scan")} />}
+
+      {step === "booking-user" && <BookingUser onBack={() => setStep("scan")} />}
+
+      {step === "booking-staff" && user && (user.role === "admin" || user.role === "restaurant") && <BookingStaff onBack={() => setStep("scan")} />}
 
       {step === "buffet" && table && (
         <BuffetSetup
@@ -320,8 +366,8 @@ export default function App() {
           order={order}
           orderItems={orderItems}
           guestCount={guestCount}
-          selectedBuffet={selectedBuffet}
-          selectedAddons={selectedAddons}
+          selectedBuffet={buffets.find((b) => String(b.id) === String(selectedBuffetId))}
+          selectedAddons={addons.filter((a) => selectedAddonIds.includes(a.id))}
           totals={totals}
           onAdd={onAddMenuItem}
           onQty={onQty}
@@ -331,29 +377,9 @@ export default function App() {
           setOrderNote={setOrderNote}
         />
       )}
+      </Container>
     </div>
   );
 }
 
-const page = { maxWidth: 980, margin: "0 auto", padding: 16, fontFamily: "system-ui" };
-
-const topBar = {
-  position: "sticky",
-  top: 0,
-  zIndex: 20,
-  background: "white",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: "10px 0",
-  borderBottom: "1px solid #eee",
-  marginBottom: 12,
-};
-
-const btnGhost = {
-  padding: "8px 10px",
-  borderRadius: 10,
-  border: "1px solid #ddd",
-  background: "#f7f7f7",
-  cursor: "pointer",
-};
+// Styles removed in favor of React Bootstrap CSS

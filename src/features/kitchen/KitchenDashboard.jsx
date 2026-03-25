@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Container, Button, Form, Row, Col, Card, Badge } from "react-bootstrap";
 import {
   getAllTables,
   getOrders,
@@ -102,177 +103,113 @@ export default function KitchenDashboard({ onBack }) {
   };
 
   return (
-    <div>
-      <div style={headerBar}>
-        <h2>Kitchen Dashboard</h2>
-        <button style={btn} onClick={onBack}>
+    <Container fluid className="py-4" style={{ maxWidth: '1200px' }}>
+      <div className="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <h2 className="fw-bold mb-0">Kitchen Dashboard</h2>
+        <Button variant="dark" onClick={onBack}>
           Về khách
-        </button>
+        </Button>
       </div>
 
-      <div style={infoBar}>
-        <span>
+      <div className="d-flex flex-wrap gap-3 align-items-center mb-4 bg-light p-3 rounded-4 shadow-sm">
+        <div className="d-flex align-items-center gap-2">
           <strong>Polling:</strong>
-        </span>
-        <span style={{ color: "#999" }}>
-          {loading ? "Đang tải..." : `Đã có ${visibleItems.length} mục`}
-        </span>
-        <button style={btnSmall} onClick={loadData} disabled={loading}>
+          <span className="text-secondary small">
+            {loading ? "Đang tải..." : `Đã có ${visibleItems.length} mục`}
+          </span>
+        </div>
+        <Button variant="outline-dark" size="sm" className="fw-bold rounded-pill" onClick={loadData} disabled={loading}>
           Làm mới ngay
-        </button>
+        </Button>
       </div>
 
-      {error && <div style={errorStyle}>{error}</div>}
+      {error && <div className="alert alert-danger shadow-sm rounded-4">{error}</div>}
 
-      <div style={filterBar}>
-        <label>
-          Bàn:
-          <select value={filterTableId} onChange={(e) => setFilterTableId(e.target.value)} style={selectStyle}>
+      <div className="d-flex flex-wrap gap-3 mb-4">
+        <Form.Group className="d-flex align-items-center gap-2">
+          <Form.Label className="mb-0 fw-bold">Bàn:</Form.Label>
+          <Form.Select 
+            value={filterTableId} 
+            onChange={(e) => setFilterTableId(e.target.value)} 
+            className="shadow-sm border-0 bg-white"
+            style={{ minWidth: '150px' }}
+          >
             <option value="">Tất cả</option>
             {tables.map((table) => (
               <option key={table.id} value={table.id}>
                 {table.tableNumber}
               </option>
             ))}
-          </select>
-        </label>
+          </Form.Select>
+        </Form.Group>
 
-        <label>
-          Trạng thái:
-          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} style={selectStyle}>
+        <Form.Group className="d-flex align-items-center gap-2">
+          <Form.Label className="mb-0 fw-bold">Trạng thái:</Form.Label>
+          <Form.Select 
+            value={filterStatus} 
+            onChange={(e) => setFilterStatus(e.target.value)} 
+            className="shadow-sm border-0 bg-white"
+            style={{ minWidth: '150px' }}
+          >
             <option value="all">Tất cả</option>
             <option value="pending">Pending</option>
             <option value="preparing">Preparing</option>
             <option value="served">Served</option>
-          </select>
-        </label>
+          </Form.Select>
+        </Form.Group>
       </div>
 
-      <div style={grid}>
-        {visibleItems.length === 0 && <div style={{ color: "#777" }}>Không có món phù hợp</div>}
+      {visibleItems.length === 0 && <div className="text-muted fst-italic">Không có món phù hợp</div>}
 
+      <Row className="g-3">
         {visibleItems.map((item) => {
           const canAdvance = item.status !== "served";
           const next = item.status === "pending" ? "preparing" : item.status === "preparing" ? "served" : "served";
 
+          let badgeColor = "warning";
+          if (item.status === "preparing") badgeColor = "info";
+          if (item.status === "served") badgeColor = "success";
+
           return (
-            <div key={`${item.id}-${item.orderId}`} style={card}>
-              <div style={row}>
-                <div>
-                  <strong>{item.name}</strong> x{item.quantity}
-                </div>
-                <div style={statusBadge(item.status)}>{item.status}</div>
-              </div>
+            <Col xs={12} sm={6} md={4} lg={3} key={`${item.id}-${item.orderId}`}>
+              <Card className="shadow-sm border-0 h-100 rounded-4">
+                <Card.Body className="d-flex flex-column p-3">
+                  <div className="d-flex justify-content-between align-items-start mb-2 gap-2">
+                    <Card.Title className="fs-6 fw-bold mb-0">
+                      {item.name} <span className="text-danger">x{item.quantity}</span>
+                    </Card.Title>
+                    <Badge bg={badgeColor} className="text-uppercase rounded-pill py-1 px-2" style={{ fontSize: '10px' }}>
+                      {item.status}
+                    </Badge>
+                  </div>
 
-              <div style={textSmall}>Order #{item.orderId} / Bàn {item.table?.tableNumber ?? item.order?.tableId}</div>
-              <div style={textSmall}>Order status: {item.order?.status || "-"}</div>
-              <div style={textSmall}>Note khách: {item.order?.note || "Không có"}</div>
+                  <div className="text-secondary small mt-2 flex-grow-1">
+                    <div><strong>Order #{item.orderId}</strong> / Bàn {item.table?.tableNumber ?? item.order?.tableId}</div>
+                    <div><span className="text-muted">Order status:</span> {item.order?.status || "-"}</div>
+                    {item.order?.note && (
+                      <div className="mt-1 p-2 bg-light rounded text-danger fst-italic">
+                        Note: {item.order.note}
+                      </div>
+                    )}
+                  </div>
 
-              <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
-                <button style={btnSmall} onClick={() => changeItemStatus(item)} disabled={!canAdvance || loading}>
-                  {canAdvance ? `Chuyển sang ${next}` : "Hoàn thành"}
-                </button>
-                <button style={btnSmall} onClick={loadData} disabled={loading}>
-                  Tải lại
-                </button>
-              </div>
-            </div>
+                  <div className="mt-3 pt-3 border-top d-flex flex-column gap-2">
+                    <Button 
+                      variant={canAdvance ? "dark" : "outline-secondary"} 
+                      size="sm" 
+                      className="w-100 fw-bold" 
+                      onClick={() => changeItemStatus(item)} 
+                      disabled={!canAdvance || loading}
+                    >
+                      {canAdvance ? `Chuyển sang ${next}` : "Hoàn thành"}
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
           );
         })}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 }
-
-const headerBar = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: 12,
-};
-
-const infoBar = {
-  display: "flex",
-  gap: 12,
-  alignItems: "center",
-  marginBottom: 10,
-};
-
-const filterBar = {
-  display: "flex",
-  gap: 16,
-  flexWrap: "wrap",
-  marginBottom: 14,
-};
-
-const grid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-  gap: 12,
-};
-
-const card = {
-  border: "1px solid #ddd",
-  borderRadius: 10,
-  padding: 12,
-  background: "#fff",
-};
-
-const row = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: 12,
-};
-
-const textSmall = {
-  color: "#555",
-  fontSize: 12,
-  marginTop: 4,
-};
-
-const statusBadge = (status) => ({
-  padding: "3px 8px",
-  borderRadius: 999,
-  textTransform: "uppercase",
-  fontSize: 10,
-  fontWeight: 800,
-  background: status === "pending" ? "#ffe9ad" : status === "preparing" ? "#cce5ff" : "#d4edda",
-  color: status === "served" ? "#155724" : "#333",
-  border: "1px solid #ccc",
-});
-
-const btn = {
-  border: "1px solid #111",
-  background: "#111",
-  color: "#fff",
-  borderRadius: 8,
-  padding: "8px 12px",
-  cursor: "pointer",
-};
-
-const btnSmall = {
-  border: "1px solid #111",
-  background: "#fff",
-  color: "#111",
-  borderRadius: 8,
-  padding: "6px 10px",
-  cursor: "pointer",
-  fontSize: 12,
-};
-
-const selectStyle = {
-  marginLeft: 8,
-  padding: "5px 8px",
-  borderRadius: 6,
-  border: "1px solid #ccc",
-};
-
-const errorStyle = {
-  background: "#fdecea",
-  color: "#a94442",
-  border: "1px solid #f5c6cb",
-  padding: 8,
-  borderRadius: 6,
-  marginBottom: 10,
-};

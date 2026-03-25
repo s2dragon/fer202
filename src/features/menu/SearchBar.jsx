@@ -1,32 +1,17 @@
 import React from "react";
+import { Form, InputGroup } from "react-bootstrap";
 
 export default function SearchBar({ value, onChange }) {
   return (
-    <div style={wrap}>
-      <input
-        style={input}
+    <InputGroup className="mb-3 shadow-sm rounded-4 overflow-hidden">
+      <InputGroup.Text className="bg-white border-0 ps-3">🔍</InputGroup.Text>
+      <Form.Control
         placeholder="Tìm món… (vd: tokbokki, bò, tôm, coca)"
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        className="border-0 py-2 shadow-none"
+        style={{ fontSize: 14 }}
       />
-      {/* <img src="/download.png" alt="Download" style={{ width: 14, height: 14, cursor: 'pointer' }} /> */}
-    </div>
+    </InputGroup>
   );
 }
-
-const wrap = {
-  display: "flex",
-  gap: 8,
-  alignItems: "center",
-  border: "1px solid #ddd",
-  borderRadius: 12,
-  padding: "10px 12px",
-  background: "#fff",
-};
-
-const input = {
-  border: "none",
-  outline: "none",
-  width: "100%",
-  fontSize: 14,
-};

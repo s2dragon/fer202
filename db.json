@@ -213,6 +213,14 @@
       "name": "Mực nướng",
       "price": 0,
       "image": "/menu/placeholder.jpg"
+    },
+    {
+      "id": "4131",
+      "restaurantId": 1,
+      "categoryId": 2,
+      "name": "Mon test 1",
+      "price": 55000,
+      "image": "/menu/placeholder.jpg"
     }
   ],
   "orders": [
@@ -226,13 +234,13 @@
       "addonIds": [
         1
       ],
-      "status": "ordering",
+      "status": "paid",
       "subTotal": 0,
       "buffetTotal": 417000,
       "addonTotal": 20000,
       "grandTotal": 437000,
       "createdAt": "2026-03-05T12:00:00",
-      "updatedAt": "2026-03-05T13:28:27.710Z"
+      "updatedAt": "2026-03-25T15:43:18.113Z"
     },
     {
       "id": "7717",
@@ -242,8 +250,8 @@
       "buffetId": 1,
       "guestCount": 2,
       "addonIds": [],
-      "status": "ordering",
-      "updatedAt": "2026-03-05T13:36:25.731Z",
+      "status": "paid",
+      "updatedAt": "2026-03-25T15:43:34.244Z",
       "note": "",
       "subTotal": 0,
       "buffetTotal": 0,
@@ -259,8 +267,8 @@
       "buffetId": 1,
       "guestCount": 5,
       "addonIds": [],
-      "status": "ordering",
-      "updatedAt": "2026-03-05T13:47:06.856Z",
+      "status": "paid",
+      "updatedAt": "2026-03-25T15:43:48.828Z",
       "note": "",
       "subTotal": 0,
       "buffetTotal": 0,
@@ -413,6 +421,45 @@
       "addonTotal": 0,
       "grandTotal": 0,
       "createdAt": "2026-03-19T07:05:08.040Z"
+    },
+    {
+      "id": "269f",
+      "restaurantId": 1,
+      "tableId": "1",
+      "orderType": "buffet",
+      "buffetId": 1,
+      "guestCount": 10,
+      "addonIds": [
+        "1",
+        "2"
+      ],
+      "status": "ordering",
+      "note": "",
+      "updatedAt": "2026-03-25T15:04:09.965Z",
+      "subTotal": 0,
+      "buffetTotal": 0,
+      "addonTotal": 0,
+      "grandTotal": 0,
+      "createdAt": "2026-03-25T15:04:09.965Z"
+    },
+    {
+      "id": "0c95",
+      "restaurantId": 1,
+      "tableId": "1",
+      "orderType": "buffet",
+      "buffetId": 1,
+      "guestCount": 2,
+      "addonIds": [
+        "1"
+      ],
+      "status": "served",
+      "note": "",
+      "updatedAt": "2026-03-25T15:42:53.904Z",
+      "subTotal": 89000,
+      "buffetTotal": 0,
+      "addonTotal": 20000,
+      "grandTotal": 109000,
+      "createdAt": "2026-03-25T15:41:47.373Z"
     }
   ],
   "orderItems": [
@@ -502,6 +549,98 @@
       "status": "pending",
       "note": "",
       "createdAt": "2026-03-16T10:08:34.037Z"
+    },
+    {
+      "id": "ad40",
+      "orderId": "269f",
+      "menuItemId": "13",
+      "name": "Gân bò nướng",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T15:04:19.097Z"
+    },
+    {
+      "id": "9bb9",
+      "orderId": "269f",
+      "menuItemId": "11",
+      "name": "Tteokbokki phô mai",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T15:04:20.894Z"
+    },
+    {
+      "id": "ea9d",
+      "orderId": "269f",
+      "menuItemId": "9",
+      "name": "Mì Tokbokki cay",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T15:04:22.889Z"
+    },
+    {
+      "id": "03d1",
+      "orderId": "269f",
+      "menuItemId": "5",
+      "name": "Tôm sú",
+      "quantity": 1,
+      "unitPrice": 99000,
+      "lineTotal": 99000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T15:04:25.236Z"
+    },
+    {
+      "id": "bb10",
+      "orderId": "269f",
+      "menuItemId": "6",
+      "name": "Coca Cola",
+      "quantity": 1,
+      "unitPrice": 20000,
+      "lineTotal": 20000,
+      "itemType": "drink",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T15:04:27.511Z"
+    },
+    {
+      "id": "674d",
+      "orderId": "269f",
+      "menuItemId": "8",
+      "name": "Kem vani",
+      "quantity": 1,
+      "unitPrice": 30000,
+      "lineTotal": 30000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T15:04:28.839Z"
+    },
+    {
+      "id": "e294",
+      "orderId": "0c95",
+      "menuItemId": "3",
+      "name": "Ba chỉ bò Mỹ",
+      "quantity": 1,
+      "unitPrice": 89000,
+      "lineTotal": 89000,
+      "itemType": "alacarte",
+      "status": "served",
+      "note": "",
+      "createdAt": "2026-03-25T15:41:52.340Z",
+      "updatedAt": "2026-03-25T15:42:53.891Z"
     }
   ],
   "bookings": [
@@ -512,6 +651,24 @@
       "phone": "0912345678",
       "guestCount": 4,
       "bookingTime": "2026-03-10T18:00:00",
+      "status": "approved"
+    },
+    {
+      "id": "36da",
+      "restaurantId": 1,
+      "customerName": "hoang anh tuan ",
+      "phone": "0966980651",
+      "guestCount": 9,
+      "bookingTime": "2027-02-22T16:06:00.000Z",
+      "status": "pending"
+    },
+    {
+      "id": "0ef7",
+      "restaurantId": 1,
+      "customerName": "Test User",
+      "phone": "0123456789",
+      "guestCount": 2,
+      "bookingTime": "2026-03-26T11:00:00.000Z",
       "status": "pending"
     }
   ],

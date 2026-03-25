@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Badge } from "react-bootstrap";
 
 export default function FloatingCartBar({ orderItems, total, onOpen }) {
   const count = useMemo(() => orderItems.reduce((s, it) => s + it.quantity, 0), [orderItems]);
@@ -6,36 +7,18 @@ export default function FloatingCartBar({ orderItems, total, onOpen }) {
   if (count === 0) return null;
 
   return (
-    <div style={wrap} onClick={onOpen}>
-      <div style={{ fontWeight: 900 }}>Giỏ hàng: {count} món</div>
-      <div style={{ fontWeight: 900 }}>{total.toLocaleString()}đ</div>
-      <div style={cta}>Xem giỏ</div>
+    <div 
+      className="position-fixed bottom-0 start-50 translate-middle-x mb-3 bg-dark text-white rounded-pill px-4 py-3 shadow d-flex justify-content-between align-items-center"
+      style={{ width: "min(940px, calc(100% - 32px))", zIndex: 1050, cursor: "pointer" }}
+      onClick={onOpen}
+    >
+      <div className="fw-bold">
+        Giỏ hàng <Badge bg="light" text="dark" className="ms-1 rounded-pill">{count}</Badge>
+      </div>
+      <div className="fw-bold fs-5">{total.toLocaleString()}đ</div>
+      <div className="bg-white text-dark fw-bold rounded-pill px-3 py-2 small">
+        Xem giỏ
+      </div>
     </div>
   );
 }
-
-const wrap = {
-  position: "fixed",
-  left: "50%",
-  bottom: 16,
-  transform: "translateX(-50%)",
-  width: "min(940px, calc(100% - 24px))",
-  background: "#111",
-  color: "#fff",
-  borderRadius: 16,
-  padding: "12px 14px",
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
-  cursor: "pointer",
-  zIndex: 50,
-};
-
-const cta = {
-  background: "#fff",
-  color: "#111",
-  padding: "6px 10px",
-  borderRadius: 12,
-  fontWeight: 900,
-};

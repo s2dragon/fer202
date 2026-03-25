@@ -50,6 +50,18 @@ export async function deleteOrderItem(id) {
   return http("DELETE", `/orderItems/${id}`);
 }
 
+export async function getAllTables() {
+  return http("GET", "/tables");
+}
+
+export async function getOrders() {
+  return http("GET", "/orders");
+}
+
+export async function getOrderItemsAll() {
+  return http("GET", "/orderItems");
+}
+
 export function calcTotals({ buffet, guestCount, addons, orderItems }) {
   const buffetTotal = buffet ? buffet.price * (guestCount || 0) : 0;
   const addonTotal = (addons || []).reduce((s, a) => s + a.price, 0);

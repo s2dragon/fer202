@@ -1,4 +1,5 @@
 import React from "react";
+import { Card, Form, Row, Col, Button, Badge } from "react-bootstrap";
 
 export default function BuffetSetup({
   table,
@@ -14,60 +15,82 @@ export default function BuffetSetup({
   onConfirm,
 }) {
   return (
-    <div style={card}>
-      <h3 style={{ marginTop: 0 }}>Chọn buffet cho bàn {table.tableNumber}</h3>
+    <Card className="shadow-sm border-0 mb-4 rounded-4">
+      <Card.Body className="p-4">
+        <h4 className="fw-bold mb-4">Chọn buffet cho bàn {table.tableNumber}</h4>
 
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-        <div style={{ minWidth: 300, flex: 1 }}>
-          <div style={label}>Gói buffet</div>
-          <select value={selectedBuffetId} onChange={(e) => setSelectedBuffetId(e.target.value)} style={input}>
-            <option value="">-- Chọn buffet --</option>
-            {buffets.map((b) => (
-              <option key={b.id} value={String(b.id)}>
-                {b.name} ({b.price.toLocaleString()}đ / người • {b.duration}p)
-              </option>
-            ))}
-          </select>
-        </div>
+        <Row className="g-3 mb-4">
+          <Col md={8}>
+            <Form.Group>
+              <Form.Label className="fw-bold text-muted small">Gói buffet</Form.Label>
+              <Form.Select 
+                value={selectedBuffetId} 
+                onChange={(e) => setSelectedBuffetId(e.target.value)}
+                className="py-2"
+              >
+                <option value="">-- Chọn gói buffet --</option>
+                {buffets.map((b) => (
+                  <option key={b.id} value={String(b.id)}>
+                    {b.name} ({b.price.toLocaleString()}đ / người • {b.duration}p)
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
-        <div style={{ minWidth: 140 }}>
-          <div style={label}>Số khách</div>
-          <input type="number" min={1} value={guestCount} onChange={(e) => setGuestCount(Number(e.target.value))} style={input} />
-        </div>
-      </div>
-
-      <div style={{ marginTop: 12 }}>
-        <div style={label}>Add-on</div>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          {addons.map((a) => (
-            <label key={a.id} style={chip}>
-              <input
-                type="checkbox"
-                checked={selectedAddonIds.includes(a.id)}
-                onChange={(e) =>
-                  setSelectedAddonIds((prev) =>
-                    e.target.checked ? [...prev, a.id] : prev.filter((x) => x !== a.id)
-                  )
-                }
+          <Col md={4}>
+            <Form.Group>
+              <Form.Label className="fw-bold text-muted small">Số khách</Form.Label>
+              <Form.Control 
+                type="text" 
+                inputMode="numeric" 
+                pattern="[0-9]*" 
+                value={guestCount} 
+                onChange={(e) => setGuestCount(e.target.value ? Number(e.target.value.replace(/[^0-9]/g, '')) : "")} 
+                className="py-2"
               />
-              <span style={{ fontWeight: 900 }}>{a.name}</span>
-              <span style={{ color: "#666" }}>+{a.price.toLocaleString()}đ</span>
-            </label>
-          ))}
-        </div>
-      </div>
+            </Form.Group>
+          </Col>
+        </Row>
 
-      <div style={{ marginTop: 16, display: "flex", gap: 10 }}>
-        <button style={ghost} onClick={onBack}>Quay lại</button>
-        <button style={primary} onClick={onConfirm}>Xác nhận</button>
-      </div>
-    </div>
+        <div className="mb-4">
+          <div className="fw-bold text-muted small mb-2">Add-on</div>
+          <div className="d-flex flex-wrap gap-2">
+            {addons.map((a) => (
+              <Form.Check
+                key={a.id}
+                type="checkbox"
+                id={`addon-${a.id}`}
+                className="mb-0"
+              >
+                <Form.Check.Input 
+                  type="checkbox" 
+                  checked={selectedAddonIds.includes(a.id)}
+                  onChange={(e) =>
+                    setSelectedAddonIds((prev) =>
+                      e.target.checked ? [...prev, a.id] : prev.filter((x) => x !== a.id)
+                    )
+                  }
+                  className="mt-1"
+                />
+                <Form.Check.Label className="ms-2 d-flex align-items-center gap-2 px-2 py-1 bg-light border rounded-pill" style={{ cursor: "pointer" }}>
+                  <span className="fw-bold">{a.name}</span>
+                  <Badge bg="secondary" className="rounded-pill">+{a.price.toLocaleString()}đ</Badge>
+                </Form.Check.Label>
+              </Form.Check>
+            ))}
+          </div>
+        </div>
+
+        <div className="d-flex gap-2 mt-4">
+          <Button variant="light" className="flex-grow-1 py-2 fw-bold border" onClick={onBack}>
+            Quay lại
+          </Button>
+          <Button variant="dark" className="flex-grow-1 py-2 fw-bold" onClick={onConfirm}>
+            Xác nhận
+          </Button>
+        </div>
+      </Card.Body>
+    </Card>
   );
 }
-
-const card = { border: "1px solid #eee", borderRadius: 16, padding: 14, background: "#fff" };
-const label = { fontSize: 12, color: "#777", marginBottom: 6, fontWeight: 800 };
-const input = { width: "100%", padding: "10px 12px", borderRadius: 12, border: "1px solid #ddd" };
-const chip = { display: "flex", gap: 8, alignItems: "center", border: "1px solid #eee", borderRadius: 999, padding: "8px 10px", background: "#fafafa" };
-const ghost = { flex: 1, padding: 12, borderRadius: 14, border: "1px solid #ddd", background: "#f7f7f7", cursor: "pointer", fontWeight: 900 };
-const primary = { flex: 1, padding: 12, borderRadius: 14, border: "1px solid #111", background: "#111", color: "#fff", cursor: "pointer", fontWeight: 900 };

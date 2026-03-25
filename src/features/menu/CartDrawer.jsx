@@ -1,4 +1,5 @@
 import React from "react";
+import { Offcanvas, Button, Form, Badge, ListGroup } from "react-bootstrap";
 import Totals from "./Totals";
 
 export default function CartDrawer({
@@ -16,118 +17,72 @@ export default function CartDrawer({
   orderNote,
   setOrderNote,
 }) {
-  if (!open) return null;
-
   return (
-    <div style={overlay} onClick={onClose}>
-      <div style={drawer} onClick={(e) => e.stopPropagation()}>
-        <div style={header}>
-          <div style={{ fontWeight: 900, fontSize: 16 }}>Giỏ hàng</div>
-          <button style={xBtn} onClick={onClose}>
-            Đóng
-          </button>
+    <Offcanvas show={open} onHide={onClose} placement="bottom" style={{ height: 'auto', maxHeight: '85vh', borderTopLeftRadius: '20px', borderTopRightRadius: '20px' }}>
+      <Offcanvas.Header closeButton className="border-bottom">
+        <Offcanvas.Title className="fw-bold">Giỏ hàng</Offcanvas.Title>
+      </Offcanvas.Header>
+      
+      <Offcanvas.Body>
+        <div className="text-secondary small mb-1">
+          Buffet: <span className="fw-bold text-dark">{selectedBuffet?.name || "-"}</span> • Khách: <span className="fw-bold text-dark">{guestCount}</span>
         </div>
-
-        <div style={{ color: "#666", marginTop: 6 }}>
-          Buffet: <b>{selectedBuffet?.name || "-"}</b> • Khách: <b>{guestCount}</b>
-        </div>
+        
         {selectedAddons.length > 0 && (
-          <div style={{ color: "#666", marginTop: 4 }}>
+          <div className="text-secondary small mb-3">
             Add-on: {selectedAddons.map((a) => a.name).join(", ")}
           </div>
         )}
 
-        <div style={{ marginTop: 12 }}>
-          {orderItems.length === 0 && <div style={{ color: "#999" }}>Chưa có món.</div>}
+        <ListGroup variant="flush" className="mb-3 border-top">
+          {orderItems.length === 0 && <ListGroup.Item className="text-muted border-0 px-0">Chưa có món.</ListGroup.Item>}
 
           {orderItems.map((it) => (
-            <div key={it.id} style={row}>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 900 }}>{it.name}</div>
-                <div style={{ color: "#666", fontSize: 12 }}>
-                  {it.unitPrice === 0 ? "Buffet" : `${it.unitPrice.toLocaleString()}đ`} • {it.status}
+            <ListGroup.Item key={it.id} className="d-flex align-items-center px-0 py-3 border-bottom">
+              <div className="flex-grow-1">
+                <div className="fw-bold">{it.name}</div>
+                <div className="text-muted small">
+                  {it.unitPrice === 0 ? "Buffet" : `${Number(it.unitPrice).toLocaleString()}đ`} 
+                  <Badge bg="secondary" className="ms-2">{it.status}</Badge>
                 </div>
               </div>
 
-              <div style={qty}>
-                <button style={qtyBtn} onClick={() => onQty(it.id, -1)}>
-                  -
-                </button>
-                <div style={{ fontWeight: 900 }}>{it.quantity}</div>
-                <button style={qtyBtn} onClick={() => onQty(it.id, +1)}>
-                  +
-                </button>
+              <div className="d-flex align-items-center mx-3">
+                <Button variant="light" size="sm" className="fw-bold border" onClick={() => onQty(it.id, -1)} style={{ width: '32px' }}>-</Button>
+                <div className="fw-bold mx-2" style={{ minWidth: '20px', textAlign: 'center' }}>{it.quantity}</div>
+                <Button variant="light" size="sm" className="fw-bold border" onClick={() => onQty(it.id, +1)} style={{ width: '32px' }}>+</Button>
               </div>
 
-              <div style={{ width: 90, textAlign: "right", fontWeight: 900 }}>
-                {it.lineTotal.toLocaleString()}đ
+              <div className="fw-bold text-end" style={{ width: '90px' }}>
+                {Number(it.lineTotal).toLocaleString()}đ
               </div>
-            </div>
+            </ListGroup.Item>
           ))}
-        </div>
+        </ListGroup>
 
         <Totals totals={totals} />
 
-        <div style={{ marginTop: 12 }}>
-          <label style={{ fontWeight: 900, fontSize: 14 }}>Ghi chú cho bếp:</label>
-          <textarea
-            style={noteInput}
+        <Form.Group className="mt-4 mb-3">
+          <Form.Label className="fw-bold small">Ghi chú cho bếp:</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={2}
             value={orderNote}
             onChange={(e) => setOrderNote(e.target.value)}
             placeholder="Ví dụ: Không hành, ít cay..."
-            rows={3}
+            className="rounded-3"
           />
+        </Form.Group>
+
+        <div className="d-flex gap-2">
+          <Button variant="light" className="flex-grow-1 fw-bold border py-2" onClick={onChangeBuffet}>Đổi buffet</Button>
+          <Button variant="dark" className="flex-grow-1 fw-bold py-2" onClick={onSubmit}>Gửi bếp</Button>
         </div>
 
-        <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
-          <button style={ghost} onClick={onChangeBuffet}>Đổi buffet</button>
-          <button style={primary} onClick={onSubmit}>Gửi bếp</button>
+        <div className="text-center text-muted small mt-3">
+          Order status: <Badge bg="info" text="dark">{orderStatus || "-"}</Badge>
         </div>
-
-        <div style={{ marginTop: 10, fontSize: 12, color: "#666" }}>
-          Order status: <b>{orderStatus || "-"}</b>
-        </div>
-      </div>
-    </div>
+      </Offcanvas.Body>
+    </Offcanvas>
   );
 }
-
-const noteInput = {
-  width: "100%",
-  marginTop: 6,
-  padding: "8px 10px",
-  borderRadius: 8,
-  border: "1px solid #ddd",
-  fontSize: 14,
-  resize: "vertical",
-};
-
-const overlay = {
-  position: "fixed",
-  inset: 0,
-  background: "rgba(0,0,0,0.35)",
-  zIndex: 60,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "flex-end",
-};
-
-const drawer = {
-  width: "min(940px, 100%)",
-  background: "#fff",
-  borderTopLeftRadius: 18,
-  borderTopRightRadius: 18,
-  padding: 14,
-  maxHeight: "80vh",
-  overflow: "auto",
-};
-
-const header = { display: "flex", justifyContent: "space-between", alignItems: "center" };
-const xBtn = { border: "1px solid #ddd", background: "#f7f7f7", borderRadius: 10, padding: "6px 10px", cursor: "pointer" };
-
-const row = { display: "flex", gap: 10, alignItems: "center", padding: "10px 0", borderBottom: "1px solid #f1f1f1" };
-const qty = { display: "flex", gap: 8, alignItems: "center" };
-const qtyBtn = { width: 28, height: 28, borderRadius: 10, border: "1px solid #ddd", background: "#f7f7f7", cursor: "pointer", fontWeight: 900 };
-
-const ghost = { flex: 1, padding: 12, borderRadius: 14, border: "1px solid #ddd", background: "#f7f7f7", cursor: "pointer", fontWeight: 900 };
-const primary = { flex: 1, padding: 12, borderRadius: 14, border: "1px solid #111", background: "#111", color: "#fff", cursor: "pointer", fontWeight: 900 };
