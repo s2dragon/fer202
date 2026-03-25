@@ -240,7 +240,7 @@
       "addonTotal": 20000,
       "grandTotal": 437000,
       "createdAt": "2026-03-05T12:00:00",
-      "updatedAt": "2026-03-25T15:43:18.113Z"
+      "updatedAt": "2026-03-25T17:35:36.138Z"
     },
     {
       "id": "7717",
@@ -284,8 +284,8 @@
       "buffetId": 2,
       "guestCount": 2,
       "addonIds": [],
-      "status": "ordering",
-      "updatedAt": "2026-03-05T13:49:07.430Z",
+      "status": "paid",
+      "updatedAt": "2026-03-25T17:35:36.144Z",
       "note": "",
       "subTotal": 0,
       "buffetTotal": 0,
@@ -301,8 +301,8 @@
       "buffetId": 1,
       "guestCount": 2,
       "addonIds": [],
-      "status": "ordering",
-      "updatedAt": "2026-03-05T13:56:28.824Z",
+      "status": "paid",
+      "updatedAt": "2026-03-25T17:35:36.149Z",
       "note": "",
       "subTotal": 0,
       "buffetTotal": 0,
@@ -320,8 +320,8 @@
       "addonIds": [
         "1"
       ],
-      "status": "ordering",
-      "updatedAt": "2026-03-05T14:02:29.748Z",
+      "status": "paid",
+      "updatedAt": "2026-03-25T17:35:36.155Z",
       "note": "",
       "subTotal": 0,
       "buffetTotal": 0,
@@ -339,8 +339,8 @@
       "addonIds": [
         "2"
       ],
-      "status": "ordering",
-      "updatedAt": "2026-03-05T14:05:10.465Z",
+      "status": "paid",
+      "updatedAt": "2026-03-25T17:40:26.146Z",
       "note": "",
       "subTotal": 0,
       "buffetTotal": 0,
@@ -356,8 +356,8 @@
       "buffetId": 1,
       "guestCount": 2,
       "addonIds": [],
-      "status": "ordering",
-      "updatedAt": "2026-03-05T14:30:01.554Z",
+      "status": "paid",
+      "updatedAt": "2026-03-25T17:35:36.161Z",
       "note": "",
       "subTotal": 0,
       "buffetTotal": 0,
@@ -375,8 +375,8 @@
       "addonIds": [
         "2"
       ],
-      "status": "pending",
-      "updatedAt": "2026-03-16T09:06:07.139Z",
+      "status": "paid",
+      "updatedAt": "2026-03-25T17:35:36.167Z",
       "note": "",
       "subTotal": 0,
       "buffetTotal": 0,
@@ -394,8 +394,8 @@
       "addonIds": [
         "2"
       ],
-      "status": "ordering",
-      "updatedAt": "2026-03-19T07:02:33.209Z",
+      "status": "paid",
+      "updatedAt": "2026-03-25T17:35:36.174Z",
       "note": "",
       "subTotal": 0,
       "buffetTotal": 0,
@@ -413,8 +413,8 @@
       "addonIds": [
         "2"
       ],
-      "status": "ordering",
-      "updatedAt": "2026-03-19T07:05:08.040Z",
+      "status": "paid",
+      "updatedAt": "2026-03-25T17:35:36.179Z",
       "note": "",
       "subTotal": 0,
       "buffetTotal": 0,
@@ -433,9 +433,9 @@
         "1",
         "2"
       ],
-      "status": "ordering",
+      "status": "paid",
       "note": "",
-      "updatedAt": "2026-03-25T15:04:09.965Z",
+      "updatedAt": "2026-03-25T17:35:36.186Z",
       "subTotal": 0,
       "buffetTotal": 0,
       "addonTotal": 0,
@@ -452,14 +452,134 @@
       "addonIds": [
         "1"
       ],
-      "status": "served",
+      "status": "paid",
       "note": "",
-      "updatedAt": "2026-03-25T15:42:53.904Z",
+      "updatedAt": "2026-03-25T17:35:36.192Z",
       "subTotal": 89000,
       "buffetTotal": 0,
       "addonTotal": 20000,
       "grandTotal": 109000,
       "createdAt": "2026-03-25T15:41:47.373Z"
+    },
+    {
+      "id": "11c9",
+      "restaurantId": 1,
+      "tableId": "1",
+      "orderType": "buffet",
+      "buffetId": 1,
+      "guestCount": 2,
+      "addonIds": [
+        "2",
+        "1"
+      ],
+      "status": "paid",
+      "note": "",
+      "updatedAt": "2026-03-25T17:35:36.199Z",
+      "subTotal": 0,
+      "buffetTotal": 0,
+      "addonTotal": 0,
+      "grandTotal": 0,
+      "createdAt": "2026-03-25T16:55:02.905Z"
+    },
+    {
+      "id": "49d3",
+      "restaurantId": 1,
+      "tableId": "2",
+      "orderType": "buffet",
+      "buffetId": 2,
+      "guestCount": 10,
+      "addonIds": [
+        "1",
+        "2"
+      ],
+      "status": "paid",
+      "note": "",
+      "updatedAt": "2026-03-25T17:36:18.177Z",
+      "subTotal": 144000,
+      "buffetTotal": 1790000,
+      "addonTotal": 35000,
+      "grandTotal": 1969000,
+      "createdAt": "2026-03-25T16:58:40.932Z"
+    },
+    {
+      "id": "0a76",
+      "restaurantId": 1,
+      "tableId": "2",
+      "orderType": "buffet",
+      "buffetId": 1,
+      "guestCount": 10,
+      "addonIds": [
+        "2",
+        "1"
+      ],
+      "status": "paid",
+      "note": "",
+      "updatedAt": "2026-03-25T17:36:18.184Z",
+      "subTotal": 254000,
+      "buffetTotal": 1390000,
+      "addonTotal": 35000,
+      "grandTotal": 1679000,
+      "createdAt": "2026-03-25T17:01:50.486Z"
+    },
+    {
+      "id": "f06b",
+      "restaurantId": 1,
+      "tableId": "3",
+      "orderType": "buffet",
+      "buffetId": 2,
+      "guestCount": 2,
+      "addonIds": [
+        "1",
+        "2"
+      ],
+      "status": "paid",
+      "note": "",
+      "updatedAt": "2026-03-25T17:40:26.152Z",
+      "subTotal": 223000,
+      "buffetTotal": 358000,
+      "addonTotal": 35000,
+      "grandTotal": 616000,
+      "createdAt": "2026-03-25T17:06:05.895Z"
+    },
+    {
+      "id": "ac05",
+      "restaurantId": 1,
+      "tableId": "1",
+      "orderType": "buffet",
+      "buffetId": 1,
+      "guestCount": 123456,
+      "addonIds": [
+        "1",
+        "2"
+      ],
+      "status": "paid",
+      "note": "",
+      "updatedAt": "2026-03-25T17:35:36.317Z",
+      "subTotal": 0,
+      "buffetTotal": 17160384000,
+      "addonTotal": 35000,
+      "grandTotal": 17160419000,
+      "createdAt": "2026-03-25T17:07:58.860Z"
+    },
+    {
+      "id": "a2f7",
+      "restaurantId": 1,
+      "tableId": "1",
+      "orderType": "buffet",
+      "buffetId": 1,
+      "guestCount": 78,
+      "addonIds": [
+        "1",
+        "2"
+      ],
+      "status": "pending",
+      "note": "",
+      "updatedAt": "2026-03-25T18:02:55.275Z",
+      "subTotal": 287000,
+      "buffetTotal": 10842000,
+      "addonTotal": 35000,
+      "grandTotal": 11164000,
+      "createdAt": "2026-03-25T18:02:39.714Z"
     }
   ],
   "orderItems": [
@@ -472,7 +592,8 @@
       "unitPrice": 0,
       "lineTotal": 0,
       "itemType": "buffet",
-      "status": "pending"
+      "status": "served",
+      "updatedAt": "2026-03-25T16:34:12.271Z"
     },
     {
       "id": "2",
@@ -483,7 +604,8 @@
       "unitPrice": 89000,
       "lineTotal": 89000,
       "itemType": "alacarte",
-      "status": "pending"
+      "status": "served",
+      "updatedAt": "2026-03-25T16:34:12.976Z"
     },
     {
       "id": "09c0",
@@ -533,9 +655,10 @@
       "unitPrice": 0,
       "lineTotal": 0,
       "itemType": "buffet",
-      "status": "pending",
+      "status": "served",
       "note": "",
-      "createdAt": "2026-03-16T08:42:05.880Z"
+      "createdAt": "2026-03-16T08:42:05.880Z",
+      "updatedAt": "2026-03-25T16:34:11.621Z"
     },
     {
       "id": "6e47",
@@ -559,9 +682,10 @@
       "unitPrice": 0,
       "lineTotal": 0,
       "itemType": "buffet",
-      "status": "pending",
+      "status": "preparing",
       "note": "",
-      "createdAt": "2026-03-25T15:04:19.097Z"
+      "createdAt": "2026-03-25T15:04:19.097Z",
+      "updatedAt": "2026-03-25T17:18:30.290Z"
     },
     {
       "id": "9bb9",
@@ -572,9 +696,10 @@
       "unitPrice": 0,
       "lineTotal": 0,
       "itemType": "buffet",
-      "status": "pending",
+      "status": "preparing",
       "note": "",
-      "createdAt": "2026-03-25T15:04:20.894Z"
+      "createdAt": "2026-03-25T15:04:20.894Z",
+      "updatedAt": "2026-03-25T17:18:29.332Z"
     },
     {
       "id": "ea9d",
@@ -585,9 +710,10 @@
       "unitPrice": 0,
       "lineTotal": 0,
       "itemType": "buffet",
-      "status": "pending",
+      "status": "preparing",
       "note": "",
-      "createdAt": "2026-03-25T15:04:22.889Z"
+      "createdAt": "2026-03-25T15:04:22.889Z",
+      "updatedAt": "2026-03-25T17:18:28.417Z"
     },
     {
       "id": "03d1",
@@ -598,9 +724,10 @@
       "unitPrice": 99000,
       "lineTotal": 99000,
       "itemType": "alacarte",
-      "status": "pending",
+      "status": "preparing",
       "note": "",
-      "createdAt": "2026-03-25T15:04:25.236Z"
+      "createdAt": "2026-03-25T15:04:25.236Z",
+      "updatedAt": "2026-03-25T16:33:57.587Z"
     },
     {
       "id": "bb10",
@@ -611,9 +738,10 @@
       "unitPrice": 20000,
       "lineTotal": 20000,
       "itemType": "drink",
-      "status": "pending",
+      "status": "preparing",
       "note": "",
-      "createdAt": "2026-03-25T15:04:27.511Z"
+      "createdAt": "2026-03-25T15:04:27.511Z",
+      "updatedAt": "2026-03-25T16:34:00.759Z"
     },
     {
       "id": "674d",
@@ -624,9 +752,10 @@
       "unitPrice": 30000,
       "lineTotal": 30000,
       "itemType": "alacarte",
-      "status": "pending",
+      "status": "preparing",
       "note": "",
-      "createdAt": "2026-03-25T15:04:28.839Z"
+      "createdAt": "2026-03-25T15:04:28.839Z",
+      "updatedAt": "2026-03-25T16:33:51.483Z"
     },
     {
       "id": "e294",
@@ -641,6 +770,318 @@
       "note": "",
       "createdAt": "2026-03-25T15:41:52.340Z",
       "updatedAt": "2026-03-25T15:42:53.891Z"
+    },
+    {
+      "id": "ade2",
+      "orderId": "49d3",
+      "menuItemId": "1",
+      "name": "Tokbokki truyền thống",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T16:58:42.255Z"
+    },
+    {
+      "id": "047c",
+      "orderId": "49d3",
+      "menuItemId": "2",
+      "name": "Chả cá Hàn Quốc",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T16:58:42.608Z"
+    },
+    {
+      "id": "382c",
+      "orderId": "49d3",
+      "menuItemId": "3",
+      "name": "Ba chỉ bò Mỹ",
+      "quantity": 1,
+      "unitPrice": 89000,
+      "lineTotal": 89000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T16:58:43.160Z"
+    },
+    {
+      "id": "26f8",
+      "orderId": "49d3",
+      "menuItemId": "4131",
+      "name": "Mon test 1",
+      "quantity": 1,
+      "unitPrice": 55000,
+      "lineTotal": 55000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T16:58:45.209Z"
+    },
+    {
+      "id": "08d6",
+      "orderId": "49d3",
+      "menuItemId": "14",
+      "name": "Lườn cừu nướng",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T16:58:46.062Z"
+    },
+    {
+      "id": "e1ee",
+      "orderId": "49d3",
+      "menuItemId": "15",
+      "name": "Sò điệp nướng",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T16:58:46.467Z"
+    },
+    {
+      "id": "3fb6",
+      "orderId": "0a76",
+      "menuItemId": "1",
+      "name": "Tokbokki truyền thống",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:01:51.394Z"
+    },
+    {
+      "id": "ddcc",
+      "orderId": "0a76",
+      "menuItemId": "2",
+      "name": "Chả cá Hàn Quốc",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:01:51.772Z"
+    },
+    {
+      "id": "ddc2",
+      "orderId": "0a76",
+      "menuItemId": "3",
+      "name": "Ba chỉ bò Mỹ",
+      "quantity": 1,
+      "unitPrice": 89000,
+      "lineTotal": 89000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:01:52.158Z"
+    },
+    {
+      "id": "b4e6",
+      "orderId": "0a76",
+      "menuItemId": "4131",
+      "name": "Mon test 1",
+      "quantity": 3,
+      "unitPrice": 55000,
+      "lineTotal": 165000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:01:53.972Z"
+    },
+    {
+      "id": "a050",
+      "orderId": "0a76",
+      "menuItemId": "13",
+      "name": "Gân bò nướng",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:01:54.681Z"
+    },
+    {
+      "id": "4990",
+      "orderId": "0a76",
+      "menuItemId": "14",
+      "name": "Lườn cừu nướng",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:01:55.086Z"
+    },
+    {
+      "id": "24c2",
+      "orderId": "f06b",
+      "menuItemId": "2",
+      "name": "Chả cá Hàn Quốc",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:06:06.862Z"
+    },
+    {
+      "id": "6056",
+      "orderId": "f06b",
+      "menuItemId": "1",
+      "name": "Tokbokki truyền thống",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:06:07.234Z"
+    },
+    {
+      "id": "3b35",
+      "orderId": "f06b",
+      "menuItemId": "3",
+      "name": "Ba chỉ bò Mỹ",
+      "quantity": 1,
+      "unitPrice": 89000,
+      "lineTotal": 89000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:06:07.983Z"
+    },
+    {
+      "id": "93b6",
+      "orderId": "f06b",
+      "menuItemId": "4",
+      "name": "Ba chỉ heo",
+      "quantity": 1,
+      "unitPrice": 79000,
+      "lineTotal": 79000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:06:08.287Z"
+    },
+    {
+      "id": "23d0",
+      "orderId": "f06b",
+      "menuItemId": "4131",
+      "name": "Mon test 1",
+      "quantity": 1,
+      "unitPrice": 55000,
+      "lineTotal": 55000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:06:12.119Z"
+    },
+    {
+      "id": "c9c6",
+      "orderId": "ac05",
+      "menuItemId": "2",
+      "name": "Chả cá Hàn Quốc",
+      "quantity": 5,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T17:08:01.595Z"
+    },
+    {
+      "id": "24f8",
+      "orderId": "a2f7",
+      "menuItemId": "1",
+      "name": "Tokbokki truyền thống",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T18:02:45.506Z"
+    },
+    {
+      "id": "d8f1",
+      "orderId": "a2f7",
+      "menuItemId": "2",
+      "name": "Chả cá Hàn Quốc",
+      "quantity": 1,
+      "unitPrice": 0,
+      "lineTotal": 0,
+      "itemType": "buffet",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T18:02:45.958Z"
+    },
+    {
+      "id": "b780",
+      "orderId": "a2f7",
+      "menuItemId": "3",
+      "name": "Ba chỉ bò Mỹ",
+      "quantity": 1,
+      "unitPrice": 89000,
+      "lineTotal": 89000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T18:02:46.362Z"
+    },
+    {
+      "id": "3647",
+      "orderId": "a2f7",
+      "menuItemId": "4",
+      "name": "Ba chỉ heo",
+      "quantity": 1,
+      "unitPrice": 79000,
+      "lineTotal": 79000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T18:02:46.742Z"
+    },
+    {
+      "id": "f601",
+      "orderId": "a2f7",
+      "menuItemId": "5",
+      "name": "Tôm sú",
+      "quantity": 1,
+      "unitPrice": 99000,
+      "lineTotal": 99000,
+      "itemType": "alacarte",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T18:02:47.895Z"
+    },
+    {
+      "id": "2529",
+      "orderId": "a2f7",
+      "menuItemId": "6",
+      "name": "Coca Cola",
+      "quantity": 1,
+      "unitPrice": 20000,
+      "lineTotal": 20000,
+      "itemType": "drink",
+      "status": "pending",
+      "note": "",
+      "createdAt": "2026-03-25T18:02:48.247Z"
     }
   ],
   "bookings": [
@@ -669,6 +1110,26 @@
       "phone": "0123456789",
       "guestCount": 2,
       "bookingTime": "2026-03-26T11:00:00.000Z",
+      "status": "pending"
+    },
+    {
+      "id": "16e0",
+      "restaurantId": 1,
+      "customerName": "aaaaaaaaaa",
+      "phone": "0966980651",
+      "guestCount": 2,
+      "tableId": 1,
+      "bookingTime": "2026-03-25T17:50:00.000Z",
+      "status": "approved"
+    },
+    {
+      "id": "2f0c",
+      "restaurantId": 1,
+      "customerName": "Tester",
+      "phone": "999888777",
+      "guestCount": 4,
+      "tableId": 3,
+      "bookingTime": "2026-03-26T15:00:00.000Z",
       "status": "pending"
     }
   ],

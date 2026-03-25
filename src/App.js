@@ -9,6 +9,7 @@ import BookingStaff from "./features/booking/BookingStaff";
 import Login from "./features/auth/Login";
 import CashierDashboard from "./features/cashier/CashierDashboard";
 import AdminIndex from "./features/admin/index";
+import OrderHistory from "./features/admin/OrderHistory";
 
 import {
   getTableByQr,
@@ -308,6 +309,9 @@ export default function App() {
                   <Button variant="outline-dark" size="sm" onClick={() => setStep("cashier")}>
                     Thu ngân
                   </Button>
+                  <Button variant="outline-dark" size="sm" onClick={() => setStep("history")}>
+                    Lịch sử Đơn
+                  </Button>
                   {user.role === "admin" && (
                     <Button variant="outline-danger" size="sm" onClick={() => setStep("admin")}>
                       Quản trị (Admin)
@@ -316,7 +320,7 @@ export default function App() {
                 </>
               )}
 
-              {step !== "scan" && step !== "kitchen" && !step.startsWith("booking") && step !== "login" && (
+              {step !== "scan" && step !== "kitchen" && step !== "history" && !step.startsWith("booking") && step !== "login" && (
                 <Button variant="dark" size="sm" onClick={() => setStep("scan")}>
                   Đổi bàn
                 </Button>
@@ -335,6 +339,8 @@ export default function App() {
       {step === "kitchen" && user && (user.role === "admin" || user.role === "restaurant") && <KitchenDashboard onBack={() => setStep("scan")} />}
 
       {step === "cashier" && user && (user.role === "admin" || user.role === "restaurant") && <CashierDashboard onBack={() => setStep("scan")} />}
+
+      {step === "history" && user && (user.role === "admin" || user.role === "restaurant") && <OrderHistory onBack={() => setStep("scan")} />}
 
       {step === "admin" && user && user.role === "admin" && <AdminIndex onBack={() => setStep("scan")} />}
 

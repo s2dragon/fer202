@@ -79,7 +79,9 @@ export default function MenuPage({
 
       <MenuGrid items={filtered} onAdd={onAdd} />
 
-      <FloatingCartBar orderItems={orderItems} total={totals.grandTotal} onOpen={() => setCartOpen(true)} />
+      {!cartOpen && (
+        <FloatingCartBar orderItems={orderItems} total={totals.grandTotal} onOpen={() => setCartOpen(true)} />
+      )}
 
       <CartDrawer
         open={cartOpen}
@@ -90,7 +92,10 @@ export default function MenuPage({
         selectedBuffet={selectedBuffet}
         guestCount={guestCount}
         selectedAddons={selectedAddons}
-        onSubmit={onSubmit}
+        onSubmit={async () => {
+          await onSubmit();
+          setCartOpen(false);
+        }}
         onChangeBuffet={() => {
           setCartOpen(false);
           onChangeBuffet();

@@ -23,7 +23,7 @@ export default function CartDrawer({
         <Offcanvas.Title className="fw-bold">Giỏ hàng</Offcanvas.Title>
       </Offcanvas.Header>
       
-      <Offcanvas.Body>
+      <Offcanvas.Body className="pb-5">
         <div className="text-secondary small mb-1">
           Buffet: <span className="fw-bold text-dark">{selectedBuffet?.name || "-"}</span> • Khách: <span className="fw-bold text-dark">{guestCount}</span>
         </div>

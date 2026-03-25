@@ -20,7 +20,7 @@ export default function TableManager({ restaurantId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.tableNumber || !form.capacity) return alert("Vui lòng điền đủ");
+    if (!form.tableNumber || !form.capacity) return alert("Vui lòng điền đầy đủ số bàn và sức chứa!");
     
     // Auto generate QR logic
     const qrCode = `R${restaurantId}_T${form.tableNumber}`;
@@ -36,8 +36,10 @@ export default function TableManager({ restaurantId }) {
     try {
       if (editingId) {
         await updateItem("tables", editingId, payload);
+        alert("Cập nhật bàn thành công!");
       } else {
         await createItem("tables", payload);
+        alert("Thêm bàn mới thành công!");
       }
       setForm({ tableNumber: "", capacity: "" });
       setEditingId(null);

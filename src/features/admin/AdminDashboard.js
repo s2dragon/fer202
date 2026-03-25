@@ -3,6 +3,7 @@ import { Container, Nav, Card, Button } from "react-bootstrap";
 import TableManager from "./TableManager";
 import MenuManager from "./MenuManager";
 import BuffetManager from "./BuffetManager";
+import OrderHistory from "./OrderHistory";
 
 export default function AdminDashboard({ onBack }) {
   const [activeTab, setActiveTab] = useState("tables");
@@ -42,6 +43,15 @@ export default function AdminDashboard({ onBack }) {
             Quản lý Buffet
           </Nav.Link>
         </Nav.Item>
+        <Nav.Item>
+          <Nav.Link 
+            active={activeTab === "history"} 
+            onClick={() => setActiveTab("history")} 
+            className={`fw-bold rounded-pill text-dark ${activeTab === 'history' ? 'bg-danger text-white' : 'bg-light border'}`}
+          >
+            Lịch sử Đơn hàng
+          </Nav.Link>
+        </Nav.Item>
       </Nav>
 
       <Card className="shadow-sm border-0 rounded-4">
@@ -49,6 +59,7 @@ export default function AdminDashboard({ onBack }) {
           {activeTab === "tables" && <TableManager restaurantId={1} />}
           {activeTab === "menu" && <MenuManager restaurantId={1} />}
           {activeTab === "buffet" && <BuffetManager restaurantId={1} />}
+          {activeTab === "history" && <OrderHistory restaurantId={1} />}
         </Card.Body>
       </Card>
     </Container>

@@ -23,7 +23,13 @@ export default function MenuManager({ restaurantId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || form.price === "" || !form.categoryId) return alert("Vui lòng điền đủ");
+    if (!form.name || form.price === "" || !form.categoryId) {
+      return alert("Vui lòng điền đầy đủ tên món, giá và chọn danh mục!");
+    }
+    
+    if (isNaN(Number(form.price))) {
+      return alert("Giá tiền phải là một con số hợp lệ!");
+    }
     
     const payload = {
       restaurantId,
@@ -36,8 +42,10 @@ export default function MenuManager({ restaurantId }) {
     try {
       if (editingId) {
         await updateItem("menuItems", editingId, payload);
+        alert("Cập nhật món ăn thành công!");
       } else {
         await createItem("menuItems", payload);
+        alert("Thêm món ăn mới thành công!");
       }
       setForm({ name: "", price: "", categoryId: "", image: "" });
       setEditingId(null);

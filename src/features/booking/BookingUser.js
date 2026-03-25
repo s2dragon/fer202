@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createBooking, getBookings, getTables } from "../../api/bookingApi";
+import { Form, Button, Card, Badge, Row, Col, Container } from "react-bootstrap";
 
 export default function BookingUser({ restaurantId = 1, onBack }) {
   const [customerName, setCustomerName] = useState("");
@@ -7,47 +8,60 @@ export default function BookingUser({ restaurantId = 1, onBack }) {
   const [guestCount, setGuestCount] = useState(2);
   const [bookingDate, setBookingDate] = useState("");
   const [bookingTime, setBookingTime] = useState("");
+  const [selectedTableId, setSelectedTableId] = useState("");
+  const [tables, setTables] = useState([]);
   
   const [myBookings, setMyBookings] = useState([]);
   const [viewHistoryPhone, setViewHistoryPhone] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // Load tables for selection
+    getTables(restaurantId).then(data => {
+      setTables(data || []);
+    }).catch(e => console.error(e));
+  }, [restaurantId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!customerName || !phone || !guestCount || !bookingDate || !bookingTime) {
-      return alert("Vui lòng điền đầy đủ thông tin!");
+    if (!customerName || !phone || !guestCount || !bookingDate || !bookingTime || !selectedTableId) {
+      return alert("Vui lòng điền đầy đủ thông tin và chọn bàn!");
     }
     
     if (loading) return;
     setLoading(true);
 
     try {
-      const allTables = await getTables(restaurantId);
-      const totalCapacity = allTables.reduce((sum, t) => sum + t.capacity, 0);
-
       const allBookings = await getBookings(restaurantId);
       const reqDateTime = new Date(`${bookingDate}T${bookingTime}`);
       
-      let bookedGuestsAtSameTime = 0;
-      
-      for (const b of allBookings) {
-        if (b.status === "rejected") continue;
-        
-        const bTime = new Date(b.bookingTime);
-        const diffHours = Math.abs(reqDateTime - bTime) / 36e5;
-        
-        // Assume a booking takes about 2 hours slot
-        if (diffHours < 2) {
-          bookedGuestsAtSameTime += Number(b.guestCount);
-        }
-      }
+      // Check overlaps for the specific table
+      // Fixed 2 hours usage
+      const overlappingBookings = allBookings.filter(b => {
+        if (b.status === "rejected") return false;
+        if (String(b.tableId) !== String(selectedTableId)) return false;
 
-      if (bookedGuestsAtSameTime + Number(guestCount) > totalCapacity) {
-         setLoading(false);
-         return alert("Rất tiếc, nhà hàng đã hết chỗ vào khung giờ này. Vui lòng chọn giờ khác!");
+        const bStartTime = new Date(b.bookingTime);
+        const bEndTime = new Date(bStartTime.getTime() + 2 * 3600 * 1000); // +2 hours
+
+        const reqEndTime = new Date(reqDateTime.getTime() + 2 * 3600 * 1000); // 2 hours
+
+        // Overlap condition: Not (reqEndTime <= bStartTime OR reqStartTime >= bEndTime)
+        // Which translates to:
+        return (reqDateTime < bEndTime && reqEndTime > bStartTime);
+      });
+
+      if (overlappingBookings.length > 0) {
+        setLoading(false);
+        const conflict = overlappingBookings[0];
+        const confStart = new Date(conflict.bookingTime);
+        const confEnd = new Date(confStart.getTime() + 2 * 3600 * 1000);
+        
+        const timeFmt = { hour: '2-digit', minute: '2-digit' };
+        return alert(`Bàn này đã được đặt từ ${confStart.toLocaleTimeString('vi-VN', timeFmt)} đến ${confEnd.toLocaleTimeString('vi-VN', timeFmt)}.\nVui lòng chọn giờ sau ${confEnd.toLocaleTimeString('vi-VN', timeFmt)} hoặc chọn bàn khác!`);
       }
       
-      // Also check if same phone number already has a pending/approved booking around this time (Check trùng)
+      // Check if same phone number already has a pending/approved booking around this time (within 2h)
       const isDuplicate = allBookings.some(b => {
           if (b.phone === phone && b.status !== "rejected") {
              const bTime = new Date(b.bookingTime);
@@ -59,7 +73,7 @@ export default function BookingUser({ restaurantId = 1, onBack }) {
       
       if (isDuplicate) {
           setLoading(false);
-          return alert("Bạn đã có một đặt bàn trong khung giờ này rồi!");
+          return alert("Bạn đã có một lịch đặt bàn trong khung giờ này rồi!");
       }
 
       const newBooking = {
@@ -67,6 +81,7 @@ export default function BookingUser({ restaurantId = 1, onBack }) {
         customerName,
         phone,
         guestCount: Number(guestCount),
+        tableId: Number(selectedTableId),
         bookingTime: reqDateTime.toISOString(),
         status: "pending"
       };
@@ -80,6 +95,7 @@ export default function BookingUser({ restaurantId = 1, onBack }) {
       setGuestCount(2);
       setBookingDate("");
       setBookingTime("");
+      setSelectedTableId("");
       
       if (onBack) onBack();
       
@@ -103,131 +119,154 @@ export default function BookingUser({ restaurantId = 1, onBack }) {
   };
 
   return (
-    <div className="container" style={{ maxWidth: 700, marginTop: "20px", marginBottom: "40px" }}>
+    <Container className="py-4" style={{ maxWidth: '700px' }}>
       {onBack && (
-        <button className="btn btn-outline-secondary btn-sm mb-3 shadow-sm rounded-pill px-3" onClick={onBack}>
+        <Button variant="outline-dark" size="sm" className="mb-4 rounded-pill fw-bold" onClick={onBack}>
           &larr; Quay lại
-        </button>
+        </Button>
       )}
 
       <h2 className="mb-4 fw-bold">Đặt Bàn Online</h2>
-      <div className="card shadow-sm border-0 rounded-4 mb-5">
-        <div className="card-body p-4 bg-light rounded-4">
-          <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
-            <div>
-              <label className="fw-bold mb-1 small text-muted">Tên khách hàng</label>
-              <input
-                className="form-control py-2 rounded-3"
-                value={customerName}
-                onChange={(e) => setCustomerName(e.target.value)}
-                placeholder="VD: Nguyễn Văn A"
-              />
-            </div>
-            <div>
-              <label className="fw-bold mb-1 small text-muted">Số điện thoại</label>
-              <input
-                className="form-control py-2 rounded-3"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="SĐT"
-                type="tel"
-              />
-            </div>
-            <div>
-              <label className="fw-bold mb-1 small text-muted">Số người</label>
-              <input
-                className="form-control py-2 rounded-3"
-                value={guestCount}
-                onChange={(e) =>
-                  setGuestCount(e.target.value ? Number(e.target.value.replace(/[^0-9]/g, "")) : "")
-                }
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-              />
-            </div>
-            <div className="row g-3">
-              <div className="col-6">
-                <label className="fw-bold mb-1 small text-muted">Ngày</label>
-                <input
-                  className="form-control py-2 rounded-3"
-                  value={bookingDate}
-                  onChange={(e) => setBookingDate(e.target.value)}
-                  type="date"
-                />
-              </div>
-              <div className="col-6">
-                <label className="fw-bold mb-1 small text-muted">Giờ</label>
-                <input
-                  className="form-control py-2 rounded-3"
-                  value={bookingTime}
-                  onChange={(e) => setBookingTime(e.target.value)}
-                  type="time"
-                />
-              </div>
-            </div>
-            <button
+      <Card className="shadow-sm border-0 rounded-4 mb-5">
+        <Card.Body className="p-4 bg-light rounded-4">
+          <Form onSubmit={handleSubmit}>
+            <Row className="g-3">
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label className="fw-bold small text-muted">Tên khách hàng</Form.Label>
+                  <Form.Control
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    placeholder="VD: Nguyễn Văn A"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label className="fw-bold small text-muted">Số điện thoại</Form.Label>
+                  <Form.Control
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="SĐT"
+                    type="tel"
+                  />
+                </Form.Group>
+              </Col>
+              
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label className="fw-bold small text-muted">Chọn Bàn Đặt</Form.Label>
+                  <Form.Select 
+                    value={selectedTableId}
+                    onChange={(e) => setSelectedTableId(e.target.value)}
+                  >
+                    <option value="">-- Chọn bàn --</option>
+                    {tables.map(t => (
+                      <option key={t.id} value={t.id}>Bàn {t.tableNumber} (Sức chứa: {t.capacity} người)</option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label className="fw-bold small text-muted">Số người thực tế</Form.Label>
+                  <Form.Control
+                    value={guestCount}
+                    onChange={(e) =>
+                      setGuestCount(e.target.value ? Number(e.target.value.replace(/[^0-9]/g, "")) : "")
+                    }
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                  />
+                </Form.Group>
+              </Col>
+
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label className="fw-bold small text-muted">Ngày (Sử dụng trong 2 tiếng)</Form.Label>
+                  <Form.Control
+                    value={bookingDate}
+                    onChange={(e) => setBookingDate(e.target.value)}
+                    type="date"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label className="fw-bold small text-muted">Giờ</Form.Label>
+                  <Form.Control
+                    value={bookingTime}
+                    onChange={(e) => setBookingTime(e.target.value)}
+                    type="time"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Button
+              variant="danger"
               type="submit"
               disabled={loading}
-              className={`btn btn-danger fw-bold py-2 mt-2 rounded-3 text-white ${loading ? "opacity-50" : ""}`}
+              className="w-100 fw-bold py-2 mt-4 rounded-3"
             >
               {loading ? "Đang xử lý..." : "Xác nhận đặt bàn"}
-            </button>
-          </form>
-        </div>
-      </div>
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
 
       <hr className="my-4 text-muted" />
 
       <h4 className="fw-bold mb-3">Tra cứu lịch sử đặt bàn</h4>
       <div className="d-flex gap-2 mb-4">
-        <input
-          className="form-control py-2 rounded-3 shadow-none"
+        <Form.Control
           value={viewHistoryPhone}
           onChange={(e) => setViewHistoryPhone(e.target.value)}
           placeholder="Nhập SĐT để tra cứu..."
+          className="shadow-sm"
         />
-        <button onClick={loadHistory} className="btn btn-dark fw-bold px-4 rounded-3 text-nowrap">
+        <Button variant="dark" className="fw-bold px-4 text-nowrap" onClick={loadHistory}>
           Tra cứu
-        </button>
+        </Button>
       </div>
 
       <div className="d-flex flex-column gap-3">
         {myBookings.map((b) => {
-          let badgeColor = "bg-warning text-dark"; // pending
+          let badgeColor = "warning"; // pending
           let statusText = "Chờ duyệt";
           if (b.status === "approved") {
-            badgeColor = "bg-success";
+            badgeColor = "success";
             statusText = "Đã duyệt";
           } else if (b.status === "rejected") {
-            badgeColor = "bg-danger";
+            badgeColor = "danger";
             statusText = "Từ chối";
           }
+          
+          const tTable = tables.find(t => String(t.id) === String(b.tableId));
+          const tblDisplay = tTable ? `Bàn ${tTable.tableNumber}` : "(Chưa có bàn)";
 
           return (
-            <div
-              key={b.id}
-              className="card shadow-sm border-0 rounded-4"
-            >
-              <div className="card-body d-flex justify-content-between align-items-center p-3">
+            <Card key={b.id} className="shadow-sm border-0 rounded-4">
+              <Card.Body className="d-flex justify-content-between align-items-center p-3">
                 <div>
                   <div className="fw-bold text-dark mb-1">
                     {new Date(b.bookingTime).toLocaleString("vi-VN")}
                   </div>
                   <div className="text-secondary small">
-                    Khách: {b.customerName} - {b.guestCount} người
+                    Khách: {b.customerName} - {b.guestCount} người - <span className="text-danger fw-bold">{tblDisplay}</span>
                   </div>
                 </div>
                 <div>
-                  <span className={`badge ${badgeColor} rounded-pill px-3 py-2 shadow-sm`}>
+                  <Badge bg={badgeColor} className="px-3 py-2 rounded-pill shadow-sm">
                     {statusText}
-                  </span>
+                  </Badge>
                 </div>
-              </div>
-            </div>
+              </Card.Body>
+            </Card>
           );
         })}
       </div>
-    </div>
+    </Container>
   );
 }

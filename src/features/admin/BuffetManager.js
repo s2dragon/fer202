@@ -20,7 +20,13 @@ export default function BuffetManager({ restaurantId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.price || !form.duration) return alert("Vui lòng điền đủ");
+    if (!form.name || !form.price || !form.duration) {
+      return alert("Vui lòng điền đầy đủ tên, giá và thời gian của Gói Buffet!");
+    }
+    
+    if (isNaN(Number(form.price)) || isNaN(Number(form.duration))) {
+      return alert("Giá và Thời lượng phải là số hợp lệ!");
+    }
     
     const payload = {
       restaurantId,
@@ -32,8 +38,10 @@ export default function BuffetManager({ restaurantId }) {
     try {
       if (editingId) {
         await updateItem("buffets", editingId, payload);
+        alert("Cập nhật Gói Buffet thành công!");
       } else {
         await createItem("buffets", payload);
+        alert("Thêm Gói Buffet mới thành công!");
       }
       setForm({ name: "", price: "", duration: "" });
       setEditingId(null);

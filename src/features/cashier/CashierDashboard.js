@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getTablesWithOrders, getOrderItemsForCheckout, checkoutOrder, resetTable } from "../../api/cashierApi";
+import { getBookings } from "../../api/bookingApi";
 import InvoiceModal from "./InvoiceModal";
 import { Container, Button, Row, Col, Card, Badge } from "react-bootstrap";
 
@@ -7,18 +8,28 @@ export default function CashierDashboard({ restaurantId = 1, onBack }) {
   const [tables, setTables] = useState([]);
   const [activeOrders, setActiveOrders] = useState([]);
   const [buffets, setBuffets] = useState([]);
+  const [upcomingBookings, setUpcomingBookings] = useState([]);
   
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedTable, setSelectedTable] = useState(null);
   const [orderItemsForInvoice, setOrderItemsForInvoice] = useState([]);
   const [showInvoice, setShowInvoice] = useState(false);
 
+  // Since getBookings isn't exported from cashierApi yet, we might need to import it from bookingApi.
+  // Wait, let's just make sure getBookings is imported correctly from bookingApi. 
+  // actually, we can import it directly inside the file since it's just a file editing.
+  // I will replace `import { ... } from "../../api/cashierApi";` and add `import { getBookings } from "../../api/bookingApi";`
+  
   const loadData = async () => {
     try {
       const { tables, activeOrders, buffets } = await getTablesWithOrders(restaurantId);
       setTables(tables);
       setActiveOrders(activeOrders);
       setBuffets(buffets);
+
+      // Fetch bookings to know when tables are reserved
+      const bookings = await getBookings(restaurantId);
+      setUpcomingBookings(bookings || []);
     } catch (e) {
       alert("Lỗi tải dữ liệu thu ngân: " + e.message);
     }
@@ -43,7 +54,6 @@ export default function CashierDashboard({ restaurantId = 1, onBack }) {
 
   const handleConfirmPaid = async (grandTotal) => {
     try {
-      // Find all active orders for this table to prevent ghost orders from keeping the table occupied
       const tableOrders = activeOrders.filter(o => String(o.tableId) === String(selectedTable.id));
       for (const o of tableOrders) {
         await checkoutOrder(o.id, grandTotal);
@@ -55,6 +65,33 @@ export default function CashierDashboard({ restaurantId = 1, onBack }) {
     } catch (e) {
       alert("Lỗi thanh toán: " + e.message);
     }
+  };
+
+  const getTableAvailabilityMsg = (tableId) => {
+    const now = new Date();
+    const todayStr = now.toDateString();
+
+    const todaysBookings = upcomingBookings
+      .filter(b => b.status === "approved" || b.status === "pending")
+      .filter(b => String(b.tableId) === String(tableId))
+      .map(b => new Date(b.bookingTime))
+      .filter(date => date.toDateString() === todayStr)
+      .sort((a, b) => a - b);
+
+    for (const bTime of todaysBookings) {
+       const bEndTime = new Date(bTime.getTime() + 2 * 3600 * 1000);
+       // If current time is within a booked slot, but table is empty (isOccupied = false comes from caller)
+       if (now >= bTime && now < bEndTime) {
+          return "Đang chờ khách (Đã đặt trước)";
+       }
+       // First future booking today
+       if (bTime > now) {
+          const timeFmt = { hour: '2-digit', minute: '2-digit' };
+          return `Trống đến ${bTime.toLocaleTimeString('vi-VN', timeFmt)}`;
+       }
+    }
+
+    return "Trống (Cả ngày hôm nay)";
   };
 
   return (
@@ -105,7 +142,14 @@ export default function CashierDashboard({ restaurantId = 1, onBack }) {
                       </Button>
                     </>
                   ) : (
-                    <div className="text-muted small mt-2">Không có hóa đơn</div>
+                    <>
+                      <div className="text-secondary small mb-3 flex-grow-1 mt-2">
+                        <strong className="text-success"><i className="bi bi-clock-history"></i> Hiện tại bàn trống</strong>
+                      </div>
+                      <div className="text-center rounded-3 bg-light py-2 text-danger fw-bold small mt-auto border border-danger border-opacity-25">
+                        {getTableAvailabilityMsg(table.id)}
+                      </div>
+                    </>
                   )}
                 </Card.Body>
               </Card>
