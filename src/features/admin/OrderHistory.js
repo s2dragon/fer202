@@ -111,9 +111,8 @@ export default function OrderHistory({ onBack }) {
   return (
     <div className={onBack ? "py-4 container" : ""}>
       {onBack ? (
-        <div className="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div className="mb-4 pb-2 border-bottom">
           <h2 className="fw-bold mb-0">Lịch sử Đơn hàng</h2>
-          <Button variant="dark" onClick={onBack}>Về chọn luồng</Button>
         </div>
       ) : (
         <h3 className="fw-bold mb-4">Lịch sử & Theo dõi Đơn hàng</h3>

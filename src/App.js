@@ -155,6 +155,7 @@ export default function App() {
     if (!table) return;
     if (!selectedBuffetId) return alert("Chọn buffet trước!");
     if (guestCount <= 0) return alert("Số khách phải > 0");
+    if (guestCount > table.capacity) return alert(`Số khách không được vượt quá sức chứa của bàn (${table.capacity} người)!`);
 
     const now = new Date().toISOString();
     const payload = {

@@ -27,6 +27,11 @@ export default function BookingUser({ restaurantId = 1, onBack }) {
     if (!customerName || !phone || !guestCount || !bookingDate || !bookingTime || !selectedTableId) {
       return alert("Vui lòng điền đầy đủ thông tin và chọn bàn!");
     }
+
+    const table = tables.find(t => String(t.id) === String(selectedTableId));
+    if (table && guestCount > table.capacity) {
+      return alert(`Số khách lưu ý không được vượt quá sức chứa của bàn là ${table.capacity} người!`);
+    }
     
     if (loading) return;
     setLoading(true);
