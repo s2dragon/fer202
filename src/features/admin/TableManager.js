@@ -22,16 +22,36 @@ export default function TableManager({ restaurantId }) {
     e.preventDefault();
     if (!form.tableNumber || !form.capacity) return alert("Vui lòng điền đầy đủ số bàn và sức chứa!");
     
+    const submittedTableNumber = Number(form.tableNumber);
+    if (submittedTableNumber <= 0) return alert("Số bàn phải lớn hơn 0!");
+    
+    const submittedCapacity = Number(form.capacity);
+    if (submittedCapacity <= 0) return alert("Sức chứa phải lớn hơn 0!");
+
+    // Check for duplicate table number
+    const isDuplicate = tables.some(t => Number(t.tableNumber) === submittedTableNumber && t.id !== editingId);
+    if (isDuplicate) {
+      return alert("Số bàn này đã tồn tại! Vui lòng chọn số bàn khác.");
+    }
+
     // Auto generate QR logic
-    const qrCode = `R${restaurantId}_T${form.tableNumber}`;
+    const qrCode = `R${restaurantId}_T${submittedTableNumber}`;
 
     const payload = {
       restaurantId,
-      tableNumber: Number(form.tableNumber),
-      capacity: Number(form.capacity),
+      tableNumber: submittedTableNumber,
+      capacity: submittedCapacity,
       qrCode,
-      status: "available"
+      status: editingId ? undefined : "available"
     };
+    
+    // Giữ nguyên status hiện tạii nếu update (để không đè mất 'occupied' / 'ordering')
+    if (editingId) {
+       const existingTable = tables.find(t => t.id === editingId);
+       if (existingTable && existingTable.status) {
+          payload.status = existingTable.status;
+       }
+    }
 
     try {
       if (editingId) {

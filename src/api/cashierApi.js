@@ -16,6 +16,7 @@ export const getOrderItemsForCheckout = async (orderId) => {
 export const checkoutOrder = async (orderId, totalPaid) => {
   return await client("PATCH", `/orders/${orderId}`, { 
     status: "paid", 
+    grandTotal: totalPaid,
     updatedAt: new Date().toISOString() 
   });
 };
